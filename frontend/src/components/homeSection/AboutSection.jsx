@@ -111,7 +111,7 @@ export default function AboutSection() {
       title: "SEYCHELLES BEACH RESORT",
       subtitle: "Blue mountain beach condo",
       description:
-        "Reel Paradise is a gulf front condo located in Blue Mountain Beach off the famous Hwy 30a. Our recently updated condo boasts 3 bedrooms and 3 full bathrooms and can comfortably sleep up to 9 guests.",
+        "property is a gulf front condo located in Blue Mountain Beach off the famous Hwy 30a. Our recently updated condo boasts 3 bedrooms and 3 full bathrooms and can comfortably sleep up to 9 guests.",
       image: "/heroImg1.webp",
       sectionType: "gulf-views",
     },
@@ -152,7 +152,7 @@ export default function AboutSection() {
       title: "POOL, FITNESS & RELAXATION",
       subtitle: "Amenities",
       description:
-        "Reel Paradise 30a offers a range of amenities including covered parking, a fitness center, outdoor grilling area with Weber grills, basketball court, high-speed internet, and a newly renovated spacious atrium.Our property also includes one professional chair setup (March - October) that includes two chairs, one table and one umbrella. On the patio, you'll find extra backpack chairs, umbrellas and sand toys. We also provide beach towels for up to 8 guests.",
+        "property 30a offers a range of amenities including covered parking, a fitness center, outdoor grilling area with Weber grills, basketball court, high-speed internet, and a newly renovated spacious atrium.Our property also includes one professional chair setup (March - October) that includes two chairs, one table and one umbrella. On the patio, you'll find extra backpack chairs, umbrellas and sand toys. We also provide beach towels for up to 8 guests.",
       sectionType: "pool-hot-tub",
     },
 
@@ -243,7 +243,7 @@ export default function AboutSection() {
           <div className="w-full shrink-0 md:w-[48%]">
             <img
               src="https://img1.wsimg.com/isteam/ip/2e56267e-2454-402a-b8aa-7978b25f726c/Unit%20patio%20(1).png/:/cr=t:0%25,l:0%25,w:100%25,h:100%25/rs=w:1160,h:651"
-              alt="Reel Paradise beachfront property"
+              alt="property beachfront property"
               loading="lazy"
               className="
         block aspect-[1.5/1]
@@ -277,7 +277,7 @@ export default function AboutSection() {
                 fontFamily: '"Oswald", sans-serif',
               }}
             >
-              Welcome to Reel Paradise
+              Welcome  to property
             </h2>
           </div>
         </div>

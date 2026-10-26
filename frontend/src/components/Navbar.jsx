@@ -73,7 +73,7 @@ export default function Navbar() {
           {/* Logo */}
           {/* <Link
             to="/"
-            aria-label="Reel Paradise Home"
+            aria-label="property Home"
             className="
     absolute   top-1/2 z-10
 flex shrink-0 items-center justify-center
@@ -81,7 +81,7 @@ flex shrink-0 items-center justify-center
           >
             <img
               src="https://img1.wsimg.com/isteam/ip/2e56267e-2454-402a-b8aa-7978b25f726c/Mainlogo_REELPARADISE_Webpreview_Transparent.png/:/rs=h:386,cg:true,m/qt=q:95"
-              alt="Reel Paradise Santa Rosa Beach"
+              alt="property Santa Rosa Beach"
               className={`
        block w-auto object-contain
       transition-all duration-700
