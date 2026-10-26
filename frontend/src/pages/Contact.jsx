@@ -7,6 +7,9 @@ import { MdEmail } from "react-icons/md";
 import { FaPhoneAlt } from "react-icons/fa";
 import emailjs from "@emailjs/browser";
 import { useNavigate } from "react-router-dom";
+import {
+  ArrowRight,
+} from "lucide-react";
 
 export default function Contact({ listingId }) {
   const [listing, setListing] = useState(null);
@@ -296,13 +299,24 @@ export default function Contact({ listingId }) {
                     HERO
       ========================================= */}
 
-    <section className="relative h-[20vh] flex items-center justify-center text-white">
+      <section className="relative h-[20vh] flex items-center justify-center text-white mt-20">
         <div className="relative text-center px-6">
           <h2
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-[94px]  text-sky-900 text-center leading-tight"
-            style={{ fontFamily: '"Montserrat", "sans-serif"' }}
+            className="
+        text-[30px] font-semibold
+        uppercase leading-tight
+        tracking-[-0.035em]
+        text-[#171717]
+        drop-shadow-[2px_3px_1px_rgba(0,0,0,0.25)]
+        sm:text-4xl
+        lg:text-[48px]
+        xl:text-[50px]
+      "
+            style={{
+              fontFamily: '"Oswald", sans-serif',
+            }}
           >
-            Get In Touch
+           Plan Your Getaway
           </h2>
           {/* <p className="text-gray-500 max-w-xl mx-auto">
             Discover comfort, luxury, and unforgettable stays with us.
@@ -311,23 +325,23 @@ export default function Contact({ listingId }) {
       </section>
 
 
-      <section className="bg-[] py-20 overflow-hidden">
+      <section className="bg-[] py-2 overflow-hidden">
         <div className="max-w-7xl mx-auto px-5 md:px-10">
           {/* HEADING */}
 
           {/* MAIN */}
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20">
+          <div className="">
             {/* LEFT */}
 
             <div>
-              <div className="space-y-6 mb-10">
+              <div className="space-y-6 mb-1 grid grid-cols-1 lg:grid-cols-3 gap-14 lg:gap-20">
                 {/* LOCATION */}
 
                 <div className="bg-white rounded-[28px] p-6 shadow-sm">
                   <div className="flex items-start gap-4">
                     <div
-                      className="w-14 h-14 rounded-full bg-[#00796B] flex items-center justify-center  
+                      className="w-14 h-14 rounded-full bg-[#f8a847] flex items-center justify-center  
                     text-[#fff]
                   "
                       style={{
@@ -338,25 +352,18 @@ export default function Contact({ listingId }) {
                     </div>
 
                     <div>
-                      <h3
-                        className="  text-xl mb-2 font- 
-                    text-[#1B1B1B]
-                  "
-                        style={{
-                          fontFamily: "'Quicksand' , sans-serif",
-                        }}
-                      >
+                      <h4 className="  uppercase
+            tracking-[3px]
+            md:tracking-[4px]
+           text-black
+            text-xs
+            md:text-[16px]
+            mb-1
+          ">
                         Location
-                      </h3>
+                      </h4>
 
-                      <p
-                        className="text-gray-600 leading-7 
-                    text-[#fff]
-                  "
-                        style={{
-                          fontFamily: "'Quicksand' , sans-serif",
-                        }}
-                      >
+                      <p className="text-gray-600 text-base md:text-xl lg:text-[18px] leading-relaxed font-light">
                         Panama City Beach
                       </p>
                     </div>
@@ -368,7 +375,7 @@ export default function Contact({ listingId }) {
                 <div className="bg-white rounded-[28px] p-6 shadow-sm">
                   <div className="flex items-start gap-4">
                     <div
-                      className="w-14 h-14 rounded-full bg-[#00796B] flex items-center justify-center  
+                      className="w-14 h-14 rounded-full bg-[#f8a847] flex items-center justify-center  
                     text-[#fff]
                   "
                       style={{
@@ -379,25 +386,18 @@ export default function Contact({ listingId }) {
                     </div>
 
                     <div>
-                      <h3
-                        className="  text-xl mb-2 
-                    text-[#1B1B1B]
-                  "
-                        style={{
-                          fontFamily: "'Quicksand' , sans-serif",
-                        }}
-                      >
+                      <h4 className="  uppercase
+            tracking-[3px]
+            md:tracking-[4px]
+           text-black
+            text-xs
+            md:text-[16px]
+            mb-1
+          ">
                         Email
-                      </h3>
+                      </h4>
 
-                      <p
-                        className="text-gray-600 break-all  
-                    text-[#1B1B1B]
-                  "
-                        style={{
-                          fontFamily: "'Quicksand' , sans-serif",
-                        }}
-                      >
+                      <p className="text-gray-600 text-base md:text-xl lg:text-[18px] leading-relaxed font-light">
                         {listing?.property?.email || "info@example.com"}
                       </p>
                     </div>
@@ -409,7 +409,7 @@ export default function Contact({ listingId }) {
                 <div className="bg-white rounded-[28px] p-6 shadow-sm">
                   <div className="flex items-start gap-4">
                     <div
-                      className="w-14 h-14 rounded-full bg-[#00796B] flex items-center justify-center  
+                      className="w-14 h-14 rounded-full bg-[#f8a847] flex items-center justify-center  
                     text-[#fff]
                   "
                       style={{
@@ -420,25 +420,18 @@ export default function Contact({ listingId }) {
                     </div>
 
                     <div>
-                      <h3
-                        className="  text-xl mb-2 
-                    text-[#1B1B1B]
-                  "
-                        style={{
-                          fontFamily: "'Quicksand' , sans-serif",
-                        }}
-                      >
+                      <h4 className="  uppercase
+            tracking-[3px]
+            md:tracking-[4px]
+           text-black
+            text-xs
+            md:text-[16px]
+            mb-1
+          ">
                         Phone
-                      </h3>
+                      </h4>
 
-                      <p
-                        className="text-gray-600  
-                    text-[#1B1B1B]
-                  "
-                        style={{
-                          fontFamily: "'Quicksand' , sans-serif",
-                        }}
-                      >
+                      <p className="text-gray-600 text-base md:text-xl lg:text-[18px] leading-relaxed font-light">
                         {listing?.property?.phone || "Phone not available"}
                       </p>
                     </div>
@@ -449,212 +442,299 @@ export default function Contact({ listingId }) {
 
             {/* RIGHT */}
 
-            <form
-              onSubmit={handleSubmit}
-              className="bg-white rounded-[35px] p-6 md:p-10 shadow-sm space-y-5"
-            >
-              <h2
-                className=" text-4xl md:text-5xl mb-6  
-                    text-[#1B1B1B]
-                  "
-                style={{ fontFamily: '"Montserrat", "sans-serif"' }}
-              >
-                Book Your Stay
-              </h2>
+         
+<form
+  onSubmit={handleSubmit}
+  className="mx-auto w-full max-w-5xl overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-xl sm:rounded-3xl"
+>
+  {/* FORM HEADER */}
+  <div className="border-b border-gray-100 bg-gray-50/80 px-5 py-7 sm:px-8 sm:py-9 md:px-10">
+     
 
-              {/* INPUTS */}
+    <h2
+      className="text-3xl font-semibold uppercase leading-tight tracking-tight text-[#171717] sm:text-4xl md:text-5xl"
+      style={{ fontFamily: '"Oswald", sans-serif' }}
+    >
+      Book Your Stay
+    </h2>
 
-              <input
-                placeholder="Full Name"
-                className="w-full border border-gray-200 rounded-2xl px-5 py-4 outline-none"
-                value={form.name}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    name: e.target.value,
-                  })
-                }
-              />
+  
+  </div>
 
-              <input
-                placeholder="Email Address"
-                className="w-full border border-gray-200 rounded-2xl px-5 py-4 outline-none"
-                value={form.email}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    email: e.target.value,
-                  })
-                }
-              />
+  {/* FORM BODY */}
+  <div className="space-y-7 p-5 sm:p-8 md:p-10">
 
-              <input
-                placeholder="Phone Number"
-                className="w-full border border-gray-200 rounded-2xl px-5 py-4 outline-none"
-                value={form.phone}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    phone: e.target.value,
-                  })
-                }
-              />
+    {/* CONTACT DETAILS */}
+    <div>
+      {/* <h3 className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">
+        Contact Information
+      </h3> */}
 
-              {/* GUESTS */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div>
+          <label className="uppercase
+            tracking-[3px]
+            md:tracking-[4px]
+           text-black
+            text-xs
+            md:text-[13px]
+            mb-6">
+            Full Name <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            name="name"
+            autoComplete="name"
+            placeholder="Enter your full name"
+            required
+            className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition placeholder:text-gray-400 focus:border-[#315F60] focus:bg-white focus:ring-2 focus:ring-[#315F60]/10"
+            value={form.name}
+            onChange={(e) =>
+              setForm({ ...form, name: e.target.value })
+            }
+          />
+        </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <input
-                  type="number"
-                  min="1"
-                  placeholder="Adults"
-                  className="w-full border border-gray-200 rounded-2xl px-5 py-4 outline-none"
-                  value={form.adults}
-                  onChange={(e) =>
-                    setForm({
-                      ...form,
-                      adults: e.target.value,
-                    })
-                  }
-                />
+        <div>
+          <label className="uppercase
+            tracking-[3px]
+            md:tracking-[4px]
+           text-black
+            text-xs
+            md:text-[13px]
+            mb-6">
+            Email Address <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="email"
+            name="email"
+            autoComplete="email"
+            placeholder="you@example.com"
+            required
+            className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition placeholder:text-gray-400 focus:border-[#315F60] focus:bg-white focus:ring-2 focus:ring-[#315F60]/10"
+            value={form.email}
+            onChange={(e) =>
+              setForm({ ...form, email: e.target.value })
+            }
+          />
+        </div>
 
-                <input
-                  type="number"
-                  min="0"
-                  placeholder="Kids"
-                  className="w-full border border-gray-200 rounded-2xl px-5 py-4 outline-none"
-                  value={form.kids}
-                  onChange={(e) =>
-                    setForm({
-                      ...form,
-                      kids: e.target.value,
-                    })
-                  }
-                />
-              </div>
+        <div className="sm:col-span-2">
+          <label className="uppercase
+            tracking-[3px]
+            md:tracking-[4px]
+           text-black
+            text-xs
+            md:text-[13px]
+            mb-6">
+            Phone Number <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="tel"
+            name="phone"
+            autoComplete="tel"
+            placeholder="Enter your phone number"
+            required
+            className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition placeholder:text-gray-400 focus:border-[#315F60] focus:bg-white focus:ring-2 focus:ring-[#315F60]/10"
+            value={form.phone}
+            onChange={(e) =>
+              setForm({ ...form, phone: e.target.value })
+            }
+          />
+        </div>
+      </div>
+    </div>
 
-              {/* CHECK IN / OUT */}
+    {/* STAY DETAILS */}
+    <div>
+      <h3 className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">
+        Your Stay
+      </h3>
 
-              <div className="grid grid-cols-2 gap-4">
-                {/* CHECK IN */}
+      {/* Dates */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="min-w-0">
+          <label className="uppercase
+            tracking-[3px]
+            md:tracking-[4px]
+           text-black
+            text-xs
+            md:text-[13px]
+            mb-6">
+            Check In <span className="text-red-500">*</span>
+          </label>
+          <DatePicker
+            selected={form.checkIn}
+            selectsStart
+            startDate={form.checkIn}
+            endDate={form.checkOut}
+            minDate={new Date()}
+            placeholderText="Select check-in date"
+            dateFormat="MMM dd, yyyy"
+            required
+            onChange={(date) => {
+              setForm({
+                ...form,
+                checkIn: date,
+                checkOut:
+                  form.checkOut && date && form.checkOut <= date
+                    ? null
+                    : form.checkOut,
+              });
+            }}
+            wrapperClassName="block w-full"
+            className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#315F60] focus:bg-white focus:ring-2 focus:ring-[#315F60]/10"
+          />
+        </div>
 
-                <div>
-                  <label className="text-sm text-gray-500 mb-2 block">
-                    Check In
-                  </label>
+        <div className="min-w-0">
+          <label className="uppercase
+            tracking-[3px]
+            md:tracking-[4px]
+           text-black
+            text-xs
+            md:text-[13px]
+            mb-6">
+            Check Out <span className="text-red-500">*</span>
+          </label>
+          <DatePicker
+            selected={form.checkOut}
+            selectsEnd
+            startDate={form.checkIn}
+            endDate={form.checkOut}
+            minDate={
+              form.checkIn
+                ? new Date(form.checkIn.getFullYear(), form.checkIn.getMonth(), form.checkIn.getDate() + 1)
+                : new Date(new Date().setHours(0, 0, 0, 0))
+            }
+            placeholderText="Select check-out date"
+            dateFormat="MMM dd, yyyy"
+            required
+            onChange={(date) =>
+              setForm({ ...form, checkOut: date })
+            }
+            wrapperClassName="block w-full"
+            className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#315F60] focus:bg-white focus:ring-2 focus:ring-[#315F60]/10"
+          />
+        </div>
+      </div>
 
-                  <DatePicker
-                    selected={form.checkIn}
-                    selectsStart
-                    startDate={form.checkIn}
-                    endDate={form.checkOut}
-                    minDate={new Date()}
-                    placeholderText="Select check in"
-                    dateFormat="MMM dd, yyyy"
-                    // dayClassName={getDateType}
-                    // filterDate={(date) => !isBlocked(date)}
-                    onChange={(date) => {
-                      setForm({
-                        ...form,
-                        checkIn: date,
-                      });
-                    }}
-                    className="
-                    w-full
-                    border
-                    border-gray-200
-                    rounded-2xl
-                    px-5
-                    py-4
-                    outline-none
-                  "
-                  />
-                </div>
+      {/* Guests */}
+      <div className="mt-4 grid grid-cols-2 gap-4">
+        <div>
+          <label className="mb-2 block text-sm font-medium text-gray-700">
+            Adults <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="number"
+            name="adults"
+            min="1"
+            required
+            placeholder="Number of adults"
+            className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#315F60] focus:bg-white focus:ring-2 focus:ring-[#315F60]/10"
+            value={form.adults}
+            onChange={(e) =>
+              setForm({ ...form, adults: e.target.value })
+            }
+          />
+        </div>
 
-                {/* CHECK OUT */}
+        <div>
+          <label className="uppercase
+            tracking-[3px]
+            md:tracking-[4px]
+           text-black
+            text-xs
+            md:text-[13px]
+            mb-6">
+            Kids
+          </label>
+          <input
+            type="number"
+            name="kids"
+            min="0"
+            placeholder="Number of kids"
+            className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#315F60] focus:bg-white focus:ring-2 focus:ring-[#315F60]/10"
+            value={form.kids}
+            onChange={(e) =>
+              setForm({ ...form, kids: e.target.value })
+            }
+          />
+        </div>
+      </div>
+    </div>
 
-                <div>
-                  <label className="text-sm text-gray-500 mb-2 block">
-                    Check Out
-                  </label>
+    {/* MESSAGE */}
+    <div>
+      <label className="uppercase
+            tracking-[3px]
+            md:tracking-[4px]
+           text-black
+            text-xs
+            md:text-[13px]
+            mb-6">
+        Additional Message
+      </label>
+      <textarea
+        name="message"
+        rows={4}
+        placeholder="Tell us about any special requests..."
+        className="w-full resize-y rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition placeholder:text-gray-400 focus:border-[#315F60] focus:bg-white focus:ring-2 focus:ring-[#315F60]/10"
+        value={form.message}
+        onChange={(e) =>
+          setForm({ ...form, message: e.target.value })
+        }
+      />
+    </div>
 
-                  <DatePicker
-                    selected={form.checkOut}
-                    selectsEnd
-                    startDate={form.checkIn}
-                    endDate={form.checkOut}
-                    minDate={form.checkIn || new Date()}
-                    placeholderText="Select check out"
-                    dateFormat="MMM dd, yyyy"
-                    // dayClassName={getDateType}
-                    // filterDate={(date) => !isBlocked(date)}
-                    onChange={(date) => {
-                      setForm({
-                        ...form,
-                        checkOut: date,
-                      });
-                    }}
-                    className="
-                    w-full
-                    border
-                    border-gray-200
-                    rounded-2xl
-                    px-5
-                    py-4
-                    outline-none
-                  "
-                  />
-                </div>
-              </div>
+    {/* NIGHTS */}
+    {nights > 0 && (
+      <div className="flex items-center justify-between rounded-xl border border-[#315F60]/15 bg-[#315F60]/5 px-4 py-3.5">
+        <span className="text-sm text-gray-600">Length of stay</span>
+        <span className="font-semibold text-[#315F60]">
+          {nights} {nights === 1 ? "night" : "nights"}
+        </span>
+      </div>
+    )}
 
-              {/* MESSAGE */}
+    {/* STATUS */}
+    {status.message && (
+      <div
+        role="status"
+        className={`rounded-xl border px-4 py-3.5 text-sm ${
+          status.type === "success"
+            ? "border-green-200 bg-green-50 text-green-700"
+            : "border-red-200 bg-red-50 text-red-700"
+        }`}
+      >
+        {status.message}
+      </div>
+    )}
 
-              <textarea
-                rows="5"
-                placeholder="Your Message"
-                className="w-full border border-gray-200 rounded-2xl px-5 py-4 outline-none"
-                value={form.message}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    message: e.target.value,
-                  })
-                }
-              />
+    {/* SUBMIT */}
+    <div className="flex flex-col gap-4 border-t border-gray-100 pt-6 sm:flex-row sm:items-center sm:justify-between">
+      <p className="max-w-sm text-xs leading-relaxed text-gray-500">
+        Submitting this form sends an inquiry. Your booking is not confirmed
+        until our team confirms it.
+      </p>
 
-              {/* NIGHTS */}
+      <button
+        type="submit"
+        disabled={loading}
+        className="group inline-flex min-h-[54px] w-full shrink-0 items-center justify-center gap-3 bg-[#171717] px-6 py-4 text-xs font-semibold tracking-[0.15em] text-white shadow-[5px_5px_0px_#252525] transition-all duration-300 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-[#315F60] hover:shadow-[7px_7px_0px_#252525] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto sm:min-w-[210px]"
+        style={{ fontFamily: '"Montserrat", sans-serif' }}
+      >
+        {loading ? "SENDING..." : "SEND BOOKING"}
 
-              {nights > 0 && (
-                <p className="text-gray-600">{nights} nights selected</p>
-              )}
-
-              {/* STATUS */}
-
-              {status.message && (
-                <div
-                  className={`rounded-2xl px-5 py-4 text-sm ${
-                    status.type === "success"
-                      ? "bg-green-100 text-green-700"
-                      : "bg-red-100 text-red-700"
-                  }`}
-                >
-                  {status.message}
-                </div>
-              )}
-
-              {/* BUTTON */}
-
-              <button className=" group/button bg-[#4CAf50] mt-6 text-white rounded-full px-6 py-3 font-semibold flex items-center gap-2 transition-all duration-300  hover:shadow-2xl 
-            hover:scale-99 group">
-      {loading ? "Sending..." : "Send Booking"}
-              <span
-                className=" transition-transform duration-300 group-hover/button:translate-x-1 "
-              >
-                →
-              </span>
-            
-              
-              </button>
-            </form>
+        <ArrowRight
+          size={17}
+          className="transition-transform duration-300 group-hover:translate-x-1"
+        />
+      </button>
+    </div>
+  </div>
+</form>
+ 
           </div>
         </div>
 

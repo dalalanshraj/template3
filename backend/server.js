@@ -34,7 +34,7 @@ import contactRoutes from "./routes/contactRoutes.js";
 
 
 const app = express();
-const PORT = process.env.PORT || 5003;
+const PORT = process.env.PORT || 443;
 const allowedOrigins = [
    "http://localhost:5174",
   "http://localhost:5173",

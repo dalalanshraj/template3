@@ -4,42 +4,20 @@ import fs from "fs";
 import path from "path";
 
 // UPLOAD
-export const uploadImage = async (
-  req,
-  res
-) => {
-
+export const uploadImage = async (req, res) => {
   try {
-
     const uploadedImages = [];
 
-    const total =
-      await Gallery.countDocuments();
+    const total = await Gallery.countDocuments();
 
-    for (const [
-      index,
-      file,
-    ] of req.files.entries()) {
-
+    for (const [index, file] of req.files.entries()) {
       const filename =
+        Date.now() + "-" + Math.round(Math.random() * 1e9) + ".webp";
 
-        Date.now() +
-        "-" +
-        Math.round(
-          Math.random() * 1e9
-        ) +
-        ".webp";
-
-      const outputPath =
-        path.join(
-          process.cwd(),
-          "gallery-uploads",
-          filename
-        );
+      const outputPath = path.join(process.cwd(), "gallery-uploads", filename);
 
       // ✅ SHARP
       await sharp(file.path)
-
         .resize({
           width: 1600,
           withoutEnlargement: true,
@@ -54,39 +32,23 @@ export const uploadImage = async (
       // ✅ DELETE TEMP FILE
       fs.unlinkSync(file.path);
 
-      const created =
-        await Gallery.create({
+      const created = await Gallery.create({
+        image: `/gallery-uploads/${filename}`,
 
-          image:
-            `/gallery-uploads/${filename}`,
+        order: total + index,
+      });
 
-          order:
-            total + index,
-
-        });
-
-      uploadedImages.push(
-        created
-      );
-
+      uploadedImages.push(created);
     }
 
-    res.json(
-      uploadedImages
-    );
-
+    res.json(uploadedImages);
   } catch (err) {
-
     console.log(err);
 
     res.status(500).json({
-
       error: "Upload failed",
-
     });
-
   }
-
 };
 
 // GET ALL

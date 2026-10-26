@@ -14,7 +14,7 @@ export default function PropertyTab({
   const [form, setForm] = useState({
     title: "",
     category: "",
-    community: "",
+    // community: "",
     type: "",
     bedrooms: "",
     bathrooms: "",
@@ -31,7 +31,7 @@ export default function PropertyTab({
       setForm({
         title: initialData.title || "",
         category: initialData.category || "",
-        community: initialData.community || "",
+        // community: initialData.community || "",
         type: initialData.type || "",
         bedrooms: initialData.bedrooms || "",
         bathrooms: initialData.bathrooms || "",
@@ -127,7 +127,7 @@ export default function PropertyTab({
           </select>
 
         </div>
-        <div>
+        {/* <div>
   <label className="block text-sm font-semibold text-gray-700 mb-1">
     Community
   </label>
@@ -161,7 +161,7 @@ export default function PropertyTab({
     Shores Of Panama Properties
   </option>
 </select>
-</div> 
+</div> */}
 
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1">
@@ -196,7 +196,7 @@ export default function PropertyTab({
             <option></option>
           </select>
         </div>
-        {/* <div>
+        <div>
   <label className="block text-sm font-semibold text-gray-700 mb-1">
     iVacation Property ID
   </label>
@@ -225,7 +225,7 @@ export default function PropertyTab({
   <p className="text-xs text-gray-400 mt-1">
     Example: 7362
   </p>
-</div> * */}
+</div>
       </div>
 
       {/* ROOMS */}

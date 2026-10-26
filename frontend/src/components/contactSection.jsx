@@ -105,7 +105,7 @@ export default function ContactSection() {
               {/* CTA Button */}
 
               <div className="mt-10">
-               <button className=" group/button bg-[#4CAf50] mt-6 text-white rounded-full px-6 py-3 font-semibold flex items-center gap-2 transition-all duration-300  hover:shadow-2xl 
+               <button className=" group/button bg-[#80a3a6] mt-6 text-white rounded-full px-6 py-3 font-semibold flex items-center gap-2 transition-all duration-300  hover:shadow-2xl 
             hover:scale-99 group">
               Book Now
               <span

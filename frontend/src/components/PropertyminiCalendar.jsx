@@ -1,33 +1,25 @@
-import { useEffect, useState , useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import api from "../api/axios";
 
 export default function PropertyminiCalendar({ listingId }) {
   const [calendarDates, setCalendarDates] = useState([]);
-  const [monthsShown, setMonthsShown] = useState(2);
+const [isMobile, setIsMobile] = useState(
+  window.innerWidth <= 768
+);
 
-  useEffect(() => {
+useEffect(() => {
   const handleResize = () => {
-    setMonthsShown(
-      window.innerWidth < 768 ? 1 : 2
-    );
+    setIsMobile(window.innerWidth <= 768);
   };
 
-  handleResize();
+  window.addEventListener("resize", handleResize);
 
-  window.addEventListener(
-    "resize",
-    handleResize
-  );
-
-  return () =>
-    window.removeEventListener(
-      "resize",
-      handleResize
-    );
+  return () => {
+    window.removeEventListener("resize", handleResize);
+  };
 }, []);
-
   useEffect(() => {
     if (listingId) {
       fetchDates();
@@ -36,169 +28,185 @@ export default function PropertyminiCalendar({ listingId }) {
 
   const fetchDates = async () => {
     try {
-      const res = await api.get(
-        `/listings/${listingId}/calendar`
-      );
+      const res = await api.get(`/calendar/${listingId}/calendar`);
 
-
-
-      setCalendarDates(
-        Array.isArray(res.data.calendar)
-          ? res.data.calendar
-          : Array.isArray(res.data)
-          ? res.data
-          : []
-      );
-
+      setCalendarDates(res.data.calendar || []);
     } catch (err) {
       console.log(err);
     }
   };
-
-  // NORMALIZE DATE
-   // =====================================
+  // =====================================
   // FORMAT DATE
   // =====================================
 
   const formatLocalDate = (date) => {
+    const d = new Date(date);
 
-  const d = new Date(date);
+    if (isNaN(d)) {
+      return "";
+    }
 
-  if (isNaN(d)) {
-    return "";
-  }
-
-  return new Intl.DateTimeFormat(
-    "en-CA",
-    {
+    return new Intl.DateTimeFormat("en-CA", {
       timeZone: "America/Chicago",
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
-    }
-  ).format(d);
-
-};
+    }).format(d);
+  };
 
   // =====================================
   // BLOCKED MAP
   // =====================================
 
-const blockedMap = useMemo(() => {
+  const blockedMap = useMemo(() => {
+    const map = {};
 
-  const map = {};
+    calendarDates.forEach((item) => {
+      // INVALID DATE SKIP
+      if (!item?.date) return;
 
-  calendarDates.forEach((item) => {
+      const parsedDate = new Date(item.date);
 
-    // INVALID DATE SKIP
-    if (!item?.date) return;
+      if (isNaN(parsedDate)) return;
 
-    const parsedDate =
-      new Date(item.date);
-
-    if (isNaN(parsedDate)) return;
-
-    const itemDate = new Date(
-      parsedDate.toLocaleString(
-        "en-US",
-        {
+      const itemDate = new Date(
+        parsedDate.toLocaleString("en-US", {
           timeZone: "America/Chicago",
-        }
-      )
-    );
+        }),
+      );
 
-    const key =
-      formatLocalDate(itemDate);
+      const key = formatLocalDate(itemDate);
 
-    if (!map[key]) {
-      map[key] = [];
-    }
+      if (!map[key]) {
+        map[key] = [];
+      }
 
-    map[key].push(item.status);
+      map[key].push(item.status);
+    });
 
-  });
-
-  return map;
-
-}, [calendarDates]);
+    return map;
+  }, [calendarDates]);
 
   // =====================================
   // DATE TYPE
   // =====================================
 
-const getDateType = (date) => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const getDateType = (date) => {
+    const today = new Date();
 
-  const currentDate = new Date(date);
-  currentDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
 
-  if (currentDate < today) {
-    return "past-day";
-  }
+    const currentDate = new Date(date);
 
-  const currentKey =
-    formatLocalDate(currentDate);
+    currentDate.setHours(0, 0, 0, 0);
 
-  const statuses =
-    blockedMap[currentKey] || [];
+    // PAST
+    if (currentDate < today) {
+      return "past-day";
+    }
 
-  const hasCIN =
-    statuses.includes("CIN");
+    const currentKey = formatLocalDate(currentDate);
 
-  const hasCOUT =
-    statuses.includes("COUT");
+    const statuses = blockedMap[currentKey] || [];
 
-  const hasR =
-    statuses.includes("R");
+    const hasCIN = statuses.includes("CIN");
 
-  const hasH =
-    statuses.includes("H");
+    const hasCOUT = statuses.includes("COUT");
 
-  // TRUE TURNOVER
-  if (hasCIN && hasCOUT) {
-    return "turnover-day";
-  }
+    const hasR = statuses.includes("R");
 
-  if (hasCIN) {
-    return "checkin-day";
-  }
+    // =====================================
+    // PREVIOUS DAY
+    // =====================================
 
-  if (hasCOUT) {
-    return "checkout-day";
-  }
+    const prevDay = new Date(currentDate);
 
-  if (hasR) {
-    return "blocked-day";
-  }
+    prevDay.setDate(prevDay.getDate() - 1);
 
-  if (hasH) {
-    return "hold-day";
-  }
+    const prevKey = formatLocalDate(prevDay);
 
-  return "available-day";
-};
+    const prevStatuses = blockedMap[prevKey] || [];
+
+    const prevHasBooking =
+      prevStatuses.includes("R") || prevStatuses.includes("COUT");
+
+    // =====================================
+    // TURNOVER
+    // =====================================
+
+    // SAME DAY
+    if (hasCIN && hasCOUT) {
+      return "turnover-day";
+    }
+
+    // PREVIOUS DAY BOOKED
+    // + CURRENT DAY CHECKIN
+    if (hasCIN && prevHasBooking) {
+      return "turnover-day";
+    }
+
+    // CHECK-IN
+    if (hasCIN) {
+      return "checkin-day";
+    }
+
+    // CHECK-OUT
+    if (hasCOUT) {
+      return "checkout-day";
+    }
+
+    // BOOKED
+    if (hasR) {
+      return "blocked-day";
+    }
+
+    return "available-day";
+  };
 
   // =====================================
   // BLOCK CHECK
   // =====================================
 
+  const isBlocked = (date) => {
+    const key = formatLocalDate(date);
 
+    const statuses = blockedMap[key] || [];
+
+    return statuses.includes("R");
+  };
 
   return (
-    <div className="">
+    <div className="w-full">
+      {/* HEADING */}
+       <h2
+            className="
+        text-[30px] font-semibold
+        uppercase leading-tight text-center mb-14
+        tracking-[-0.035em]
+        text-[#171717]
+        drop-shadow-[2px_3px_1px_rgba(0,0,0,0.25)]
+        sm:text-4xl
+        lg:text-[48px]
+        xl:text-[40px]
+      "
+            style={{
+              fontFamily: '"Oswald", sans-serif',
+            }}
+          >
+        Availability Calendar
+      </h2>
 
-
-<div className="w-full overflow-hidden flex justify-center">
-  <DatePicker
-   inline
+      {/* CALENDAR */}
+   <div className="w-full overflow-hidden flex justify-center">
+ <DatePicker
+  inline
   selected={null}
   onChange={() => {}}
-   monthsShown={window.innerWidth < 768 ? 1 : 2}
-  dayClassName={getDateType}
   minDate={new Date()}
+  monthsShown={isMobile ? 1 : 2}
+  dayClassName={getDateType}
+  showOtherMonths={false}
   fixedHeight
-  showPopperArrow={false}
   filterDate={(date) => {
     const today = new Date();
 
@@ -208,308 +216,446 @@ const getDateType = (date) => {
 
     current.setHours(0, 0, 0, 0);
 
-    return current >= today;
+    return current >= today && !isBlocked(date);
   }}
 />
 </div>
 
       {/* LEGEND */}
-   <div className="flex flex-wrap justify-center gap-5 mt-8">
-          {/* AVAILABLE */}
-          <div className="flex items-center gap-2">
-            <span className="w-4 h-4 rounded bg-[#FFE7E7]"></span>
-            Available
-          </div>
-
-          {/* BOOKED */}
-          <div className="flex items-center gap-2">
-            <span className="w-4 h-4 rounded bg-[#ADB8D6]"></span>
-            Booked
-          </div>
-
-          {/* CHECK-IN */}
-          <div className="flex items-center gap-2">
-            <span
-              className="w-4 h-4 rounded border"
-              style={{
-                background: "linear-gradient(135deg, #ADB8D6 50%, #FFE7E7 50%)",
-              }}
-            ></span>
-            Check-Out
-          </div>
-
-          {/* CHECK-OUT */}
-          <div className="flex items-center gap-2">
-            <span
-              className="w-4 h-4 rounded border"
-              style={{
-                background: "linear-gradient(315deg, #ADB8D6 50%, #FFE7E7 50%)",
-              }}
-            ></span>
-            Check-In
-          </div>
-
-          {/* TURNOVER */}
-          <div className="flex items-center gap-2">
-            <span className="relative w-4 h-4 rounded bg-[#ADB8D6] overflow-hidden">
-              <span className="absolute w-[140%] h-[2px] bg-black top-1/2 left-[-20%] rotate-135"></span>
-            </span>
-            Turnover
-          </div>
-
-          {/* HOLD */}
-          <div className="flex items-center gap-2">
-            <span className="w-4 h-4 rounded bg-yellow-400"></span>
-            Hold
-          </div>
+      <div className="flex justify-center gap-6 mt-6 text-sm flex-wrap">
+        {/* AVAILABLE */}
+        <div className="flex items-center gap-2">
+          <span className="w-4 h-4 bg-[#FFE7E7] rounded"></span>
+          Available
         </div>
+
+        {/* BOOKED */}
+        <div className="flex items-center gap-2">
+          <span className="w-4 h-4 bg-[#ADB8D6] rounded"></span>
+          Booked
+        </div>
+
+        {/* CHECK-IN */}
+        <div className="flex items-center gap-2">
+          <span
+            className="w-4 h-4 rounded border"
+            style={{
+              background: "linear-gradient(135deg, #FFE7E7 50% , #ADB8D6 50%)",
+            }}
+          ></span>
+          Check-In
+        </div>
+
+        {/* CHECK-OUT */}
+        <div className="flex items-center gap-2">
+          <span
+            className="w-4 h-4 rounded border"
+            style={{
+              background: "linear-gradient(315deg, #FFE7E7 50% ,  #ADB8D6 50%)",
+            }}
+          ></span>
+          Check-Out
+        </div>
+
+        {/* TURNOVER */}
+        <div className="flex items-center gap-2">
+          <span className="relative w-4 h-4 rounded overflow-hidden border">
+            <span
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(to bottom right, #ADB8D6 49%, #ADB8D6 51%)",
+              }}
+            ></span>
+
+            <span
+              className="
+              absolute
+              w-[180%]
+              h-[2px]
+              bg-black
+              top-1/2
+              left-[-40%]
+              rotate-[-45deg]
+            "
+            ></span>
+          </span>
+          Turnover
+        </div>
+      </div>
 
       {/* STYLES */}
       <style>{`
 
-.react-datepicker {
-  border: none !important;
-  width: 100% !important;
-  max-width: 900px !important;
-  background: transparent !important;
+/* =====================================================
+   MAIN DATEPICKER
+===================================================== */
 
-  display: flex !important;
-gap: 20px;
-  justify-content: center;
-}
-.react-datepicker__week {
-  display: flex !important;
-}
+.react-datepicker{
 
+  width:100% !important;
 
-.react-datepicker__month-container {
-  float: none !important;
-  display: inline-block;
-  margin: 0 25px;
-}
+  max-width:980px !important;
 
-.react-datepicker__header {
-  background: transparent !important;
-  border-bottom: none !important;
-}
-.react-datepicker__navigation-icon::before {
-  border-color: #fff !important;
-}
-  .react-datepicker__navigation-icon::before {
-  border-color: #222 !important;
-}
-.react-datepicker__current-month {
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 15px;
+  border:none !important;
+
+  display:flex !important;
+
+  justify-content:center;
+
+  align-items:flex-start;
+
+  gap:40px;
+
+  padding:20px;
+
+  font-family:inherit;
+
+  background:#fff;
+
 }
 
-.react-datepicker__day-name {
-  width: 42px;
-  line-height: 42px;
-  font-weight: 600;
+/* =====================================================
+   MONTH CONTAINER
+===================================================== */
+
+.react-datepicker__month-container{
+
+  width:430px;
+
 }
 
-.react-datepicker__day {
-  width: 42px;
-  height: 42px;
-  line-height: 42px;
-  margin: 3px;
-  border-radius: 8px;
+/* =====================================================
+   HEADER
+===================================================== */
+
+.react-datepicker__header{
+
+  background:white;
+
+  border:none;
+
+  padding-bottom:18px;
+
 }
 
-.react-datepicker__navigation {
-  top: 18px !important;
-  width: 32px !important;
-  height: 32px !important;
-  z-index: 10 !important;
+/* =====================================================
+   MONTH TITLE
+===================================================== */
+
+.react-datepicker__current-month{
+
+  font-size:26px;
+
+  font-weight:200;
+
+  margin-bottom:18px;
+
 }
 
-.react-datepicker__navigation--previous {
-  left: 15px !important;
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+.react-datepicker__navigation{
+
+  top:2px;
+  right:40px
+
 }
 
-.react-datepicker__navigation--next {
-  right: 15px !important;
+.react-datepicker__navigation-icon::before{
+
+  border-color:#222;
+
+  border-width:2px 2px 0 0;
+
 }
 
-.react-datepicker__navigation-icon::before {
-  border-color: #ffffff !important;
-  border-width: 2px 2px 0 0 !important;
+/* =====================================================
+   WEEK
+===================================================== */
+
+.react-datepicker__week{
+
+  display:flex;
+
+  justify-content:space-between;
+
 }
 
+/* =====================================================
+   DAY NAME
+===================================================== */
 
+.react-datepicker__day-name{
 
+  width:48px;
 
-/* AVAILABLE */
-.react-datepicker__day.available-day {
-  background-color: #FFE7E7 !important;
-  color: black !important;
+  height:48px;
+
+  line-height:48px;
+
+  margin:3px;
+
+  font-size:15px;
+
+  font-weight:200;
+
 }
 
-/* BOOKED */
-.react-datepicker__day.blocked-day {
-  background-color: #ADB8D6 !important;
-  color: white !important;
+/* =====================================================
+   DAY
+===================================================== */
+
+.react-datepicker__day{
+
+  width:48px;
+
+  height:48px;
+
+  line-height:48px;
+
+  margin:3px;
+
+  border-radius:12px;
+
+  position:relative;
+
+  font-size:15px;
+
+  transition:.25s;
+
 }
 
-/* HOLD */
-.react-datepicker__day.hold-day {
-  background-color: #facc15 !important;
-  color: black !important;
+.react-datepicker__day:hover{
+
+  transform:scale(1.05);
+
 }
 
-/* CHECK-IN */
-.react-datepicker__day.checkin-day {
-  background: linear-gradient(
+/* =====================================================
+   TODAY
+===================================================== */
+
+.react-datepicker__day--today{
+
+  font-weight:bold;
+
+}
+
+/* =====================================================
+   PAST
+===================================================== */
+
+.react-datepicker__day.past-day{
+
+  background:#f3f4f6 !important;
+
+  color:#bdbdbd !important;
+
+  opacity:.7;
+
+}
+
+/* =====================================================
+   AVAILABLE
+===================================================== */
+
+.react-datepicker__day.available-day{
+
+  background: #FFE7E7!important;
+
+  color:#111 !important;
+
+}
+
+/* =====================================================
+   BOOKED
+===================================================== */
+
+.react-datepicker__day.blocked-day{
+
+  background:#ADB8D6 !important;
+
+  color:black !important;
+
+}
+
+/* =====================================================
+   CHECK IN
+===================================================== */
+
+.react-datepicker__day.checkin-day{
+
+  background:linear-gradient(
     135deg,
     #FFE7E7 50%,
     #ADB8D6 50%
   ) !important;
 
-  color: black !important;
+  color:black !important;
+
 }
 
-/* CHECK-OUT */
-.react-datepicker__day.checkout-day {
-  background: linear-gradient(
+/* =====================================================
+   CHECK OUT
+===================================================== */
+
+.react-datepicker__day.checkout-day{
+
+  background:linear-gradient(
     315deg,
     #FFE7E7 50%,
     #ADB8D6 50%
   ) !important;
 
-  color: black !important;
-}
-
-.react-datepicker__day.turnover-day {
-  position: relative !important;
-  overflow: hidden !important;
-
-  width: 42px !important;
-  height: 42px !important;
-  line-height: 42px !important;
-
-   background:
-    linear-gradient(
-      135deg,
-      #ADB8D6 48%,
-      black 48%,
-      black 52%,
-      #ADB8D6 52%
-    ) !important;
-
-  color: white !important;
-  color: white !important;
-}
-
-/* diagonal line */
-.react-datepicker__day.turnover-day::after {
-  content: "";
-
-  position: absolute;
-
-  top: 50%;
-  left: -20%;
-
-  width: 140%;
-  height: 2px;
-
-  background: black;
-
- transform: rotate(-45deg);
-
-  pointer-events: none;
-}
-.react-datepicker__header {
-  position: relative !important;
-}
-
-.react-datepicker__current-month {
-  padding: 0 55px !important;
-  font-size: 18px !important;
-  font-weight: 700 !important;
-}
-/* OUTSIDE DAYS */
-.react-datepicker__day--outside-month {
-
-  visibility: hidden !important;
-
-  pointer-events: none !important;
+  color:black !important;
 
 }
-  @media (max-width: 768px) {
 
-  .react-datepicker {
-    width: 100% !important;
-    max-width: 100% !important;
-    display: block !important;
-  }
+/* =====================================================
+   TURNOVER
+===================================================== */
 
-  .react-datepicker__month-container {
-    width: 100% !important;
-    margin: 0 !important;
-  }
+.react-datepicker__day.turnover-day{
 
-  .react-datepicker__current-month {
-    font-size: 18px !important;
-  }
+  position:relative;
 
-  .react-datepicker__day-name {
-    width: 34px !important;
-    line-height: 34px !important;
-    font-size: 12px !important;
-  }
+  isolation:isolate;
 
-  .react-datepicker__day {
-    width: 34px !important;
-    height: 34px !important;
-    line-height: 34px !important;
-    margin: 1px !important;
-    font-size: 13px !important;
-  }
+  overflow:hidden;
 
-  .react-datepicker__day.turnover-day {
-    width: 34px !important;
-    height: 34px !important;
-    line-height: 34px !important;
-  }
-}
-  @media (max-width: 768px) {
-  .react-datepicker__current-month {
-    font-size: 16px !important;
-    padding: 0 50px !important;
-  }
+  color:black !important;
 
-  .react-datepicker__navigation--previous {
-    left: 10px !important;
-  }
-
-  .react-datepicker__navigation--next {
-    right: 5px !important;
-  }
-}
-  @media (max-width: 768px) {
-  .react-datepicker__current-month {
-    padding: 0 65px !important;
-    font-size: 16px !important;
-  }
-
-  .react-datepicker__navigation--previous {
-    left: 8px !important;
-  }
-
-  .react-datepicker__navigation--next {
-    right: 8px !important;
-  }
-}
-   .react-datepicker__day.past-day {
-  background: #f1f1f1 !important;
-  color: #94a3b8 !important;
-  opacity: 0.7 !important;
-  cursor: not-allowed !important;
 }
 
-      `}</style>
+.react-datepicker__day.turnover-day::before{
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  border-radius:12px;
+
+  background:linear-gradient(
+    to bottom right,
+    #ADB8D6 0%,
+    #ADB8D6 49%,
+    #ADB8D6 51%,
+    #ADB8D6 100%
+  );
+
+  z-index:-1;
+
+}
+
+.react-datepicker__day.turnover-day::after{
+
+  content:"";
+
+  position:absolute;
+
+  width:180%;
+
+  height:3px;
+
+  background:black;
+
+  top:50%;
+
+  left:-40%;
+
+  transform:rotate(-45deg);
+
+}
+
+/* =====================================================
+   OUTSIDE MONTH
+===================================================== */
+
+.react-datepicker__day--outside-month{
+
+  visibility:hidden !important;
+
+  pointer-events:none;
+
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:992px){
+
+.react-datepicker{
+
+display:block !important;
+
+max-width:430px !important;
+
+padding:10px;
+
+}
+
+.react-datepicker__month-container{
+
+width:100%;
+
+margin-bottom:35px;
+
+}
+
+.react-datepicker__day,
+.react-datepicker__day-name{
+
+width:40px;
+
+height:40px;
+
+line-height:40px;
+
+font-size:14px;
+
+}
+
+.react-datepicker__current-month{
+
+font-size:22px;
+
+}
+
+}
+
+@media(max-width:480px){
+
+.react-datepicker__day,
+.react-datepicker__day-name{
+
+width:34px;
+
+height:34px;
+
+line-height:34px;
+
+font-size:12px;
+
+margin:2px;
+
+}
+
+.react-datepicker__current-month{
+
+font-size:18px;
+
+}
+
+}
+
+
+`}</style>
     </div>
   );
 }

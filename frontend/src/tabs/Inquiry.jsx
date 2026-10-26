@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import api from "../api/axios.js";
+import * as XLSX from "xlsx";
 import {
   FaEye,
   FaDownload,
@@ -107,6 +108,85 @@ ${
 
     URL.revokeObjectURL(url);
   };
+ 
+
+/* =====================================================
+   EXPORT ALL INQUIRIES TO EXCEL
+====================================================== */
+
+const downloadAll = () => {
+  if (!inquiries.length) return;
+
+  const excelData = inquiries.map((inq, index) => ({
+    "S.No": index + 1,
+
+    "Guest Name": inq.name || "N/A",
+
+    "Email": inq.email || "N/A",
+
+    "Phone": inq.phone || "N/A",
+
+    "Property":
+      inq.property?.property?.title || "N/A",
+
+    "Arrival": inq.Arrival
+      ? new Date(inq.Arrival).toLocaleDateString("en-US")
+      : "",
+
+    "Departure": inq.Departure
+      ? new Date(inq.Departure).toLocaleDateString("en-US")
+      : "",
+
+    "Adults": Number(inq.Adults || 0),
+
+    "Kids": Number(inq.Kids || 0),
+
+    "Message": inq.message || "",
+
+    "Inquiry Date": inq.createdAt
+      ? new Date(inq.createdAt).toLocaleString("en-US")
+      : "",
+  }));
+
+  /* CREATE WORKSHEET */
+
+  const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+  /* SET COLUMN WIDTHS */
+
+  worksheet["!cols"] = [
+    { wch: 8 },   // S.No
+    { wch: 22 },  // Guest Name
+    { wch: 32 },  // Email
+    { wch: 18 },  // Phone
+    { wch: 35 },  // Property
+    { wch: 15 },  // Arrival
+    { wch: 15 },  // Departure
+    { wch: 10 },  // Adults
+    { wch: 10 },  // Kids
+    { wch: 50 },  // Message
+    { wch: 25 },  // Inquiry Date
+  ];
+
+  /* CREATE WORKBOOK */
+
+  const workbook = XLSX.utils.book_new();
+
+  XLSX.utils.book_append_sheet(
+    workbook,
+    worksheet,
+    "Inquiries"
+  );
+
+  /* DOWNLOAD */
+
+  XLSX.writeFile(
+    workbook,
+    `all-inquiries-${new Date()
+      .toISOString()
+      .split("T")[0]}.xlsx`
+  );
+};
 
   /* =====================================================
      SUMMARY
@@ -185,14 +265,47 @@ ${
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
 
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-50 border border-blue-100 text-blue-700 text-sm font-semibold">
-            <FaEnvelope size={13} />
-            {inquiries.length} Total
-          </span>
+  {/* TOTAL */}
 
-        </div>
+  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-50 border border-blue-100 text-blue-700 text-sm font-semibold">
+    <FaEnvelope size={13} />
+    {inquiries.length} Total
+  </span>
+
+  {/* DOWNLOAD ALL */}
+
+  <button
+    onClick={downloadAll}
+    disabled={inquiries.length === 0}
+    className="
+      inline-flex
+      items-center
+      justify-center
+      gap-2
+      px-4
+      py-2
+      rounded-xl
+      bg-green-600
+      text-white
+      text-sm
+      font-semibold
+      shadow-sm
+      hover:bg-green-700
+      active:scale-95
+      transition
+      cursor-pointer
+      disabled:opacity-50
+      disabled:cursor-not-allowed
+      disabled:active:scale-100
+    "
+  >
+    <FaDownload size={13} />
+   Export All Inquiries
+  </button>
+
+</div>
 
       </div>
 

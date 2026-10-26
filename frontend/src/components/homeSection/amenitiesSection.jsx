@@ -1,43 +1,65 @@
 import { useState, useEffect } from "react";
 import api from "../../api/axios";
 import AmenitiesModal from "./AmenitiesModal";
+import {
+   
+  ArrowRight,
+} from "lucide-react";
 
-export default function AmenitiesSection({ listingId }) {
+export default function AmenitiesSection( ) {
   const [open, setOpen] = useState(false);
 
   const [amenities, setAmenities] = useState([]);
 
   // FETCH AMENITIES FROM BACKEND
-  useEffect(() => {
-    if (!listingId) return;
+useEffect(() => {
+  const fetchAmenities = async () => {
+    try {
+      const { data } = await api.get("/listings/published")
+// console.log("Listing:", data);
 
-    api
-      .get(`/listings/${listingId}`)
-      .then((res) => {
-        console.log("FULL DATA:", res.data);
+data.forEach((listing) => {
+  // console.log("Amenities:", listing.amenities);
+});
+      let allAmenities = [];
 
-        // 👇 OBJECT TO ARRAY
-        const amenitiesObject =
-          res.data?.amenities || res.data?.property?.amenities || {};
+      data.forEach((listing) => {
+    //  console.log(listing);
 
-        const data = Object.keys(amenitiesObject).filter(
-          (key) => amenitiesObject[key] === true,
+const amenitiesObject =
+  listing.amenities ??
+  listing.property?.amenities ??
+  {};
+
+// console.log("Amenities Object:", amenitiesObject);
+
+        const amenities = Object.keys(amenitiesObject).filter(
+          (key) => amenitiesObject[key] === true
         );
 
-        setAmenities(data);
-      })
-      .catch((err) => {
-        console.log(err);
+        allAmenities.push(...amenities);
       });
-  }, [listingId]);
+
+      // Remove duplicates
+      const uniqueAmenities = [...new Set(allAmenities)].sort();
+
+      setAmenities(uniqueAmenities);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  fetchAmenities();
+}, []);
+
 
   // PREVIEW
   const preview = amenities.slice(0, 12);
 
   return (
-    <section className="py-1 px-6 md:px-16">
+    <section className="py-1 px-6 md:px-16 mt-20">
       {/* TOP */}
-      <p
+      {/* <p
         className="
         uppercase 
         text-center 
@@ -48,21 +70,27 @@ export default function AmenitiesSection({ listingId }) {
       "
       >
         Amenities
-      </p>
+      </p> */}
+      <div className="text-center mb-15">
 
       <h2
-        className="
-        text-3xl 
-        text-center 
-        md:text-5xl 
-        font-semibold 
-        text-gray-800 
-        mb-10
+            className="
+        text-[30px] font-semibold
+        uppercase leading-tight
+        tracking-[-0.035em]
+        text-[#171717]
+        drop-shadow-[2px_3px_1px_rgba(0,0,0,0.25)]
+        sm:text-4xl
+        lg:text-[48px]
+        xl:text-[40px]
       "
-      >
-        Our Amenities
+            style={{
+              fontFamily: '"Oswald", sans-serif',
+            }}
+          >
+        Our Common Amenities
       </h2>
-
+</div>
       {/* PREVIEW */}
       <div
         className="
@@ -77,22 +105,53 @@ export default function AmenitiesSection({ listingId }) {
         {preview
           .filter((item) => item?.trim() !== "")
           .map((name, i) => (
-            <div key={i} className="text-black font-medium text-xl" >
+            <p key={i} className="   text-gray-600
+            text-base
+            md:text-lg
+            xl:text-xl
+            leading-relaxed
+            font-light
+          " >
               {name}
-            </div>
+            </p>
           ))}
       </div>
 
       {/* BUTTON */}
       {amenities.length > 0 && (
-        <div className="flex justify-center">
+        <div className="flex justify-center p-3">
           <button
             onClick={() => setOpen(true)}
-            className="
-           px-8 py-3 mt-5 rounded-full bg-[#FFE8BE] text-black font-medium shadow-md hover:scale-105  transition duration-300
-          "
-          >
+             className="
+        group relative mt-6
+        inline-flex min-h-[58px]
+        min-w-[185px] items-center
+        justify-center gap-3
+        bg-[#171717] px-7 py-4
+        text-[13px] font-semibold
+        tracking-[0.19em] text-white
+        shadow-[8px_8px_0px_#252525]
+        transition-all duration-300
+        hover:-translate-x-1 hover:-translate-y-1
+        hover:bg-[#315F60]
+        hover:shadow-[10px_10px_0px_#252525]
+        active:translate-x-1 active:translate-y-1
+        active:shadow-none
+        sm:min-w-[200px]
+      "
+      style={{
+        fontFamily: '"Montserrat", sans-serif',
+      }}
+    >
+            
             Show all {amenities.length} Amenities
+            <ArrowRight
+                    size={16}
+                    className="
+                      transition-transform duration-300
+                      group-hover:translate-x-1
+                    "
+                  />
           </button>
         </div>
       )}

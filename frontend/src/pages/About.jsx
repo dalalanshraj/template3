@@ -61,53 +61,128 @@ export default function About({ listingId }) {
 
   const heroImage = images[2] || image1;
 
+  const sections = [
+    {
+      title: "SEYCHELLES BEACH RESORT",
+      subtitle: "Your Peaceful Beachfront Escape",
+      description:
+        "Enjoy a relaxing getaway at Seychelles Beach Resort on the east end of Panama City Beach. Our beachfront one-bedroom condos offer beautiful Gulf views, private balconies, comfortable accommodations, and access to resort amenities including beachside pools, a fitness center, and a hot tub. Located near St. Andrews State Park, Seychelles is an ideal place for a quiet vacation, romantic getaway, or fun-filled family escape.",
+      image: "/heroImg1.webp",
+      isCollage: true,
+    },
+
+    {
+      title: "PRIME BEACHFRONT LOCATION",
+      subtitle: "Close to Everything You Love",
+      description:
+        "Located near Pier Park, Bay County Pier, shopping, restaurants, water sports, and Panama City Beach's famous white-sand shoreline, our vacation rentals place you close to everything you need for an unforgettable getaway.",
+      image: "/about-img4.jpeg",
+      isCollage: false,
+    },
+  ];
+
   return (
     <>
       {/* 🔥 HERO */}
-      <section className="relative h-[20vh] flex items-center justify-center text-white">
+      <section className="relative h-[20vh] flex items-center justify-center text-white mt-30">
         <div className="relative text-center px-6">
           <h2
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-[94px]  text-sky-900 text-center leading-tight"
-            style={{ fontFamily: '"Montserrat", "sans-serif"' }}
+            className="
+        text-[30px] font-semibold
+        uppercase leading-tight
+        tracking-[-0.035em]
+        text-[#171717]
+        drop-shadow-[2px_3px_1px_rgba(0,0,0,0.25)]
+        sm:text-4xl
+        lg:text-[48px]
+        xl:text-[50px]
+      "
+            style={{
+              fontFamily: '"Oswald", sans-serif',
+            }}
           >
-            About Us
+            About us
           </h2>
-          <p className="text-gray-500 max-w-xl mx-auto">
+          <p className="uppercase
+            tracking-[3px]
+            md:tracking-[4px]
+           text-black
+            text-xs
+            md:text-[16px]
+            mt-5
+          ">
             Discover comfort, luxury, and unforgettable stays with us.
           </p>
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-14 mt-20 items-center py-20 px-6 md:px-16">
-        {/* TEXT */}
-        <div>
-          <span className="inline-block bg-[#00796B] text-white uppercase tracking-[3px] text-xs px-5 py-2 rounded-md">
-            About us
-          </span>
-
-          <h3
-            className="text-3xl md:text-6xl  text-gray-800 mb-8"
-            style={{ fontFamily: '"Montserrat", "sans-serif"' }}
+      <div className="space-y-16 sm:space-y-24 md:space-y-32 mt-20">
+        {sections.map((item, index) => (
+          <div
+            key={item.title}
+            className={`grid grid-cols-1 items-center gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-16 xl:gap-20 ${index % 2 !== 0
+              ? "lg:[&>*:first-child]:order-2"
+              : ""
+              }`}
           >
-            A Passion for Real <br /> Estate in Southwest Florida
-          </h3>
-        </div>
-        {/* IMAGE */}
-        <div className="relative group overflow-hidden rounded-2xl leading-light">
-          <p>
-            My Florida Real Estate and Vacation Rentals is committed to helping
-            buyers, sellers, and investors navigate the Southwest Florida market
-            with confidence. Our experienced realtors specialize in luxury
-            homes, beachfront properties, golf communities, and short-term
-            rentals, providing expert guidance every step of the way. With a
-            focus on integrity, professionalism, and local insight, we make real
-            estate transactions smooth and successful.
-          </p>
-        </div>
+
+
+            {/* IMAGE */}
+            <div className="flex w-full min-w-0 items-center justify-center px-0 sm:px-3 lg:px-20">
+              {item.isCollage ? (
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  loading="lazy"
+                  className="block h-auto w-full max-w-full object-contain"
+                />
+              ) : (
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  loading="lazy"
+                  className="
+        block
+        h-[260px]
+        w-full
+        rounded-sm
+        object-cover
+        object-center
+        sm:h-[380px]
+        md:h-[440px]
+        lg:h-[500px]
+      "
+                />
+              )}
+            </div>
+
+            {/* CONTENT */}
+            <div className="flex flex-col justify-center text-center px-2 md:px-8 lg:px-10">
+
+
+              <h4 className="  uppercase
+            tracking-[3px]
+            md:tracking-[4px]
+           text-black
+            text-xs
+            md:text-[19px]
+            mb-6
+          ">
+                {item.subtitle}
+              </h4>
+
+              <p className="text-gray-600 text-base md:text-xl   leading-relaxed font-light">
+                {item.description}
+              </p>
+
+            </div>
+          </div>
+        ))}
       </div>
 
+
       {/* 🔥 WHY CHOOSE US */}
-      <section className="py-16 sm:py-20 px-4 sm:px-6 md:px-16 bg-gray-100">
+      {/* <section className="py-16 sm:py-20 px-4 sm:px-6 md:px-16 bg-gray-100">
         <span className="inline-block bg-[#00796B] text-white uppercase tracking-[3px] text-xs px-5 py-2 rounded-md">
           About us
         </span>
@@ -119,7 +194,7 @@ export default function About({ listingId }) {
           Southwest Florida
         </h3>
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center mt-10">
-          {/* IMAGE */}
+          
           <div className="overflow-hidden rounded-2xl group">
             <img
               src="https://le-de.cdn-website.com/c5f5db73735f44758e7635e0dd9aae8f/dms3rep/multi/opt/Neitzke+Pool-2880w.jpg"
@@ -127,7 +202,7 @@ export default function About({ listingId }) {
               alt="Why Choose Us"
             />
           </div>
-          {/* CONTENT */}
+         
           <div className="mb-">
             <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-3">
               My Florida Real Estate and Vacation Rentals is dedicated to
@@ -159,8 +234,8 @@ export default function About({ listingId }) {
             </p>
           </div>
         </div>
-      </section>
-      <ContactSection />
+      </section> */}
+      {/* <ContactSection /> */}
     </>
   );
 }

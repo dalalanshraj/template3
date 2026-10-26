@@ -65,7 +65,7 @@ const PropertyCard = ({ listing }) => {
       <div className=" absolute bottom-0 left-0 right-0 bg-white/60 backdrop-blur- px-6 pt-6 pb-1 transition-all duration-500 group-hover:bg-white/94 ">
         {/* Property Title */}
 
-        <h3 className=" text-[20px]   lg:text-[22px] font-bold leading-tight text-[#1B1B1B] line-clamp-2 min-h-[56px] duration-300 group-hover:text-[#4CAf50] ">
+        <h3 className=" text-[20px]   lg:text-[22px] font-bold leading-tight text-[#1B1B1B] line-clamp-2 min-h-[56px] duration-300 group-hover:text-[#80a3a6] ">
           {listing?.property?.title}
         </h3>
 
@@ -98,7 +98,7 @@ const PropertyCard = ({ listing }) => {
           </div>
 
           <Link to={`/${listing._id}`}>
-            <button className=" group/button bg-[#4CAf50] text-white rounded-full px-6 py-3 font-semibold flex items-center gap-2 transition-all duration-300 hover:bg-[#44AAD8] ">
+            <button className=" group/button bg-[#80a3a6] text-white rounded-full px-6 py-3 font-semibold flex items-center gap-2 transition-all duration-300 hover:bg-[#44AAD8] ">
               View
               <span
                 className="

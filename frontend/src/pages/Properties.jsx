@@ -94,7 +94,7 @@ const Properties = () => {
         <div className="max-w-[1600px] mx-auto px-5 md:px-8 py-9 md:py-12">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <div>
-              <p className="text-xs md:text-sm uppercase tracking-[4px] text-[#4CAf50] font-semibold mb-3">
+              <p className="text-xs md:text-sm uppercase tracking-[4px] text-[#80a3a6] font-semibold mb-3">
                 Find your perfect stay
               </p>
 
@@ -110,7 +110,7 @@ const Properties = () => {
 
             <div className="flex items-center gap-3">
               <div className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
-                <p className="text-2xl font-semibold text-[#4CAf50]">
+                <p className="text-2xl font-semibold text-[#80a3a6]">
                   {loading ? "—" : properties.length}
                 </p>
                 <p className="text-xs text-gray-500">Available properties</p>
@@ -119,7 +119,7 @@ const Properties = () => {
               <button
                 type="button"
                 onClick={() => setShowMap((prev) => !prev)}
-                className="flex items-center gap-2 rounded-xl bg-[#4CAf50] px-4 py-3 text-sm font-semibold text-white hover:bg-[#08396f] transition"
+                className="flex items-center gap-2 rounded-xl bg-[#80a3a6] px-4 py-3 text-sm font-semibold text-white hover:bg-[#08396f] transition"
               >
                 {showMap ? <X size={17} /> : <Map size={17} />}
                 {showMap ? "Hide map" : "Show map"}
@@ -143,7 +143,7 @@ const Properties = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by property, location or community..."
-              className="w-full rounded-xl border border-gray-200 bg-white py-3.5 pl-11 pr-4 text-sm outline-none transition focus:border-[#4CAf50] focus:ring-4 focus:ring-blue-100"
+              className="w-full rounded-xl border border-gray-200 bg-white py-3.5 pl-11 pr-4 text-sm outline-none transition focus:border-[#80a3a6] focus:ring-4 focus:ring-blue-100"
             />
 
             {search && (
@@ -164,7 +164,7 @@ const Properties = () => {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="flex-1 sm:flex-none rounded-xl border border-gray-200 bg-white px-4 py-3.5 text-sm outline-none focus:border-[#4CAf50]"
+              className="flex-1 sm:flex-none rounded-xl border border-gray-200 bg-white px-4 py-3.5 text-sm outline-none focus:border-[#80a3a6]"
             >
               <option value="default">Recommended</option>
               <option value="price-low">Price: Low to High</option>
@@ -184,7 +184,7 @@ const Properties = () => {
             <button
               type="button"
               onClick={() => setSearch("")}
-              className="text-sm font-medium text-[#4CAf50] hover:underline"
+              className="text-sm font-medium text-[#80a3a6] hover:underline"
             >
               Clear filters
             </button>
@@ -221,7 +221,7 @@ const Properties = () => {
             <button
               type="button"
               onClick={() => setSearch("")}
-              className="mt-5 rounded-lg bg-[#4CAf50] px-5 py-2.5 text-white text-sm"
+              className="mt-5 rounded-lg bg-[#80a3a6] px-5 py-2.5 text-white text-sm"
             >
               Clear search
             </button>
@@ -261,7 +261,7 @@ const Properties = () => {
                     onClick={() => setSelectedProperty(p)}
                     className={`group overflow-hidden rounded-2xl border bg-white/10 backdrop-blur-sm cursor-pointer transition-all duration-300 ${
                       isSelected
-                        ? "border-[#4CAf50] ring-2 ring-blue-100 shadow-md"
+                        ? "border-[#80a3a6] ring-2 ring-blue-100 shadow-md"
                         : "border-gray-200 hover:border-gray-300 hover:shadow-lg"
                     }`}
                   >
@@ -287,14 +287,14 @@ const Properties = () => {
                         to={`/${p._id}`}
                         onClick={(e) => e.stopPropagation()}
                         aria-label={`View ${p.property?.title || "property"}`}
-                        className="absolute right-3 bottom-3 flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#4CAf50] shadow-md transition hover:bg-[#4CAf50] hover:text-white"
+                        className="absolute right-3 bottom-3 flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#80a3a6] shadow-md transition hover:bg-[#80a3a6] hover:text-white"
                       >
                         <ArrowUpRight size={19} />
                       </Link>
                     </div>
 
                     <div className="p-5 bg-white/10 backdrop-blur-sm">
-                      <h2 className="text-lg font-semibold leading-snug text-[#1b1b1b] transition-colors group-hover:text-[#4CAf50] line-clamp-2">
+                      <h2 className="text-lg font-semibold leading-snug text-[#1b1b1b] transition-colors group-hover:text-[#80a3a6] line-clamp-2">
                         {p.property?.title || "Untitled Property"}
                       </h2>
 
@@ -307,7 +307,7 @@ const Properties = () => {
 
                       <div className="mt-4 grid grid-cols-3 divide-x divide-gray-100 rounded-xl bg-gray-50 py-3">
                         <div className="flex flex-col items-center gap-1 text-gray-600">
-                          <BedDouble size={18} className="text-[#4CAf50]" />
+                          <BedDouble size={18} className="text-[#80a3a6]" />
                           <span className="text-sm font-semibold text-gray-800">
                             {p.property?.bedrooms ?? 0}
                           </span>
@@ -315,7 +315,7 @@ const Properties = () => {
                         </div>
 
                         <div className="flex flex-col items-center gap-1 text-gray-600">
-                          <Bath size={18} className="text-[#4CAf50]" />
+                          <Bath size={18} className="text-[#80a3a6]" />
                           <span className="text-sm font-semibold text-gray-800">
                             {p.property?.bathrooms ?? 0}
                           </span>
@@ -323,7 +323,7 @@ const Properties = () => {
                         </div>
 
                         <div className="flex flex-col items-center gap-1 text-gray-600">
-                          <Users size={18} className="text-[#4CAf50]" />
+                          <Users size={18} className="text-[#80a3a6]" />
                           <span className="text-sm font-semibold text-gray-800">
                             {p.property?.maxSleeps ?? 0}
                           </span>
@@ -336,7 +336,7 @@ const Properties = () => {
                           <p className="text-xs text-gray-500">
                             Starting from
                           </p>
-                          <p className="mt-1 text-xl font-bold text-[#4CAf50]">
+                          <p className="mt-1 text-xl font-bold text-[#80a3a6]">
                             {nightlyRate != null ? `$${nightlyRate}` : "Call"}
                             {nightlyRate != null && (
                               <span className="ml-1 text-xs font-normal text-gray-500">
@@ -349,7 +349,7 @@ const Properties = () => {
                         <Link
                           to={`/${p._id}`}
                           onClick={(e) => e.stopPropagation()}
-                          className="inline-flex items-center gap-1.5 rounded-lg bg-[#4CAf50] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#08396f]"
+                          className="inline-flex items-center gap-1.5 rounded-lg bg-[#80a3a6] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#08396f]"
                         >
                           View Details
                           <ArrowUpRight size={16} />

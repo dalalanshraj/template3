@@ -47,15 +47,15 @@ function App() {
     <>
       <ScrollToTop />
       {/* FRONTEND ONLY */}
-      {!isAdminRoute && <Navbar listingId="6a57d59200d45d2238e333d9" />}
+      {!isAdminRoute && <Navbar listingId="6adb7a6a6101b6fb9bebdd9b" />}
 
       <Routes>
         {/* FRONTEND ROUTES */}
         <Route path="/" element={<HeroSection />} />
-        <Route path="/:id" element={<PropertyDetail />} />
+        <Route path="properties/:id" element={<PropertyDetail />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/about" element={<About />} />
-        <Route path="/contect-us" element={<Contact listingId="6a57d59200d45d2238e333d9" />} />
+        <Route path="/contect-us" element={<Contact listingId="6adb7a6a6101b6fb9bebdd9b" />} />
         <Route path="/booking-policy" element={<BookingPolicy />} />
         <Route path="/properties" element={<Properties />} />
         <Route path="/things-to-do" element={<ThingsToDo />} />
@@ -165,7 +165,7 @@ function App() {
       </Routes>
 
       {/* FRONTEND ONLY */}
-      {!isAdminRoute && <Footer listingId="6a57d59200d45d2238e333d9" />}
+      {!isAdminRoute && <Footer listingId="6adb7a6a6101b6fb9bebdd9b" />}
 
     </>
   );

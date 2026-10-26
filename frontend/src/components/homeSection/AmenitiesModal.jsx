@@ -45,14 +45,20 @@ export default function AmenitiesModal({
 
         {/* TITLE */}
         <h2
-          className="
-          text-3xl 
-          md:text-4xl 
-          font-semibold 
-          text-gray-800 
-          mb-10
-        "
-        >
+            className="
+        text-[30px] font-semibold
+        uppercase leading-tight
+        tracking-[-0.035em]
+        text-[#171717]
+        drop-shadow-[2px_3px_1px_rgba(0,0,0,0.25)]
+        sm:text-4xl
+        lg:text-[48px]
+        xl:text-[30px]
+      "
+            style={{
+              fontFamily: '"Oswald", sans-serif',
+            }}
+          >
           Amenities ({amenities.length})
         </h2>
 
@@ -69,7 +75,12 @@ export default function AmenitiesModal({
           {amenities.map((name, i) => (
             <div
               key={i}
-              className="text-black font-medium text-xl"
+              className=" text-gray-600
+            text-base
+            md:text-lg
+            xl:text-xl
+            leading-relaxed
+            font-light"
             >
               {name}
             </div>

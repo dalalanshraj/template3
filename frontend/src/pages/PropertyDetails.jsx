@@ -3,7 +3,12 @@ import { useParams } from "react-router-dom";
 import api from "../api/axios.js";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import {
+  CalendarDays,
+  Home,
+  Search,
+  ArrowRight,
+} from "lucide-react";
 import PropertyGallery from "../components/PropertyGallery";
 import ReviewModal from "../components/ReviewModal";
 import BookingPreviewModal from "../components/BookingModal";
@@ -21,7 +26,6 @@ import PropertyminiCalendar from "../components/PropertyminiCalendar.jsx";
 import GallerySection from "../components/gallarySection.jsx";
 import BookingBar from "../components/BookingBar.jsx";
 import OwnerRezWidget from "../components/OwnerRezWidget.jsx";
-import BookingWidget from "../components/BookingWidget.jsx";
 
 const PropertyDetail = () => {
   const { id } = useParams();
@@ -42,8 +46,6 @@ const PropertyDetail = () => {
   const [departure, setDeparture] = useState(null);
   const [guests, setGuests] = useState(1);
   const [preview, setPreview] = useState(null);
-    const [activeTab, setActiveTab] = useState("Availability");
-   const [showFullDescription, setShowFullDescription] = useState(false);
 
   // ================= FETCH LISTING =================
   useEffect(() => {
@@ -55,11 +57,6 @@ const PropertyDetail = () => {
       })
       .catch(() => setLoading(false));
   }, [id]);
-
-   // reviews
-  const reviews = listing?.reviews?.filter((r) => r.published === true) || [];
-
-
   const formatDisplayDate = (date) => {
     if (!date) return "";
 
@@ -115,8 +112,33 @@ const PropertyDetail = () => {
     }
   }, [checkIn, checkOut, listing]);
 
-  if (loading) return <p className="p-10">Loading...</p>;
-  if (!listing) return <p className="p-10">Property not found</p>;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white animate-pulse">
+        {/* Hero */}
+        <div className="h-[450px] bg-gray-200" />
+
+        <div className="max-w-7xl mx-auto px-6 py-10">
+          {/* Title */}
+          <div className="h-8 w-2/3 bg-gray-200 rounded mb-4" />
+
+          {/* Location */}
+          <div className="h-5 w-1/3 bg-gray-200 rounded mb-10" />
+
+          {/* Content */}
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="md:col-span-2 space-y-4">
+              <div className="h-5 w-full bg-gray-200 rounded" />
+              <div className="h-5 w-5/6 bg-gray-200 rounded" />
+              <div className="h-5 w-4/6 bg-gray-200 rounded" />
+            </div>
+
+            <div className="h-48 bg-gray-200 rounded-xl" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // ================= IMAGES =================
   const imageUrls = listing.photos || [];
@@ -160,558 +182,700 @@ const PropertyDetail = () => {
       {/* GALLERY */}
       <PropertyGallery images={imageUrls} />
 
-      <div className="max-w-[1400px] mx-auto px-6 py-10">
-        <div className="flex flex-col lg:flex-row gap-10">
-          {/* LEFT */}
-          <div className="flex-1 min-w-0">
-            {/* <div className="grid grid-cols-3 gap-1 mt-6">
+      <div className=" w-full max-w-full mx-auto px-4 sm:px-5 lg:px-6 mt-0 mb-20 overflow-hidden ">
+        {/* LEFT */}
+        <div className=" w-full max-w-full bg-white rounded-3xl p-4 sm:p-6 md:p-0 overflow-hidden ">
+          <section
+            id="description"
+            className=" scroll-mt-[90px] sm:scroll-mt-[100px] lg:scroll-mt-[150px] w-full max-w-full px-4
+            lg:px-6 py-10 lg:py-14 "
+          >
+            <div className="w-full flex justify-center">
+              <div className="w-full max-w-6xl">
+                {/* Location */}
 
-  <div className="bg-white/10 rounded-xl p-3 text-center">
-    <div className="text-xl">🛏</div>
-    <p className="text-xl mt-1">
-      {listing?.property?.bedrooms || 0} Beds
-    </p>
-  </div>
-
-  <div className="bg-white/10 rounded-xl p-3 text-center">
-    <div className="text-xl">🛁</div>
-    <p className="text-xl mt-1">
-      {listing?.property?.bathrooms || 0} Baths
-    </p>
-  </div>
-
-  <div className="bg-white/10 rounded-xl p-3 text-center">
-    <div className="text-xl">👥</div>
-    <p className="text-xl mt-1">
-      {listing?.property?.maxGuests || 0} Guests
-    </p>
-  </div>
-
-</div> */}
-            {listing?.deal && (
-              <div
-                className="
-      mb-5
-      border
-      border-green-200
-      bg-green-50
-      rounded-xl
-      p-8
-    "
-              >
-                <div className="font-bold text-green-700 text-xl">
-                  Active Deal
-                </div>
-
-                <div className="text-sm mt-1">{listing.deal.title}</div>
-
-                {listing.deal.description && (
-                  <div className="text-xs text-gray-600 mt-2">
-                    {listing.deal.description}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Description */}
-            <div className="mb-10">
-              {/* Description */}
-              <div className="mb-10">
-                <h3 className="text-xl md:text-2xl font-serif tracking-wide mb-4">
-                  Description
-                </h3>
-
-                <div className="relative">
-                  <div
-                    className={`overflow-hidden transition-all duration-500 ${showFullDescription ? "max-h-[5000px]" : "max-h-[220px]"
-                      }`}
-                  >
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: listing.description || "",
-                      }}
-                    />
-                  </div>
-
-                  {!showFullDescription && (
-                    <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-white to-transparent pointer-events-none" />
-                  )}
-                </div>
-
-                <button
-                  onClick={() => setShowFullDescription((prev) => !prev)}
-                  className="mt-4 px-5 py-2 border border-[#3c8a8c] text-[#3c8a8c] rounded-full hover:bg-[#3c8a8c] hover:text-white transition"
+                <p
+                  className=" uppercase tracking-[3px] md:tracking-[4px] text-center text-black text-xs
+            md:text-[16px] mb-6 "
+                  style={{
+                    fontFamily: "'Quicksand' , sans-serif",
+                  }}
                 >
-                  {showFullDescription ? "Read Less" : "Read More"}
-                </button>
-              </div>
-            </div>
+                  {listing.location?.address || "Panama City Beach, Florida"}
+                </p>
 
-            {/* AMENITIES */}
-            <h2 className="text-3xl font-bold text-gray-800 mt-10 mb-6">
-              Amenities
-            </h2>
+                {/* Title */}
 
-            {amenitiesData.map((section) => {
-              const selected = section.options.filter(
-                (item) => listing.amenities?.[item],
-              );
-
-              if (selected.length === 0) return null;
-
-              return (
-                <div
-                  key={section.title}
-                  className="mb-8 bg-white border border-gray-100 rounded-2xl shadow-sm p-5"
+                <h2
+                  className="
+        text-[30px] font-semibold
+        text-center
+        mb-10
+        uppercase leading-tight
+        tracking-[-0.035em]
+        text-[#171717]
+        drop-shadow-[2px_3px_1px_rgba(0,0,0,0.25)]
+        sm:text-4xl
+        lg:text-[48px]
+        xl:text-[40px]
+      "
+                  style={{
+                    fontFamily: '"Oswald", sans-serif',
+                  }}
                 >
-                  <h3 className="text-lg font-semibold text-[#2f9bad] mb-4 border-b pb-2">
-                    {section.title}
-                  </h3>
-
-                  <div className="flex flex-wrap gap-3">
-                    {selected.map((item) => (
-                      <span
-                        key={item}
-                        className="
-              px-4
-              py-2
-              rounded-full
-              bg-[#f0fbfd]
-              border
-              border-[#cceef3]
-              text-gray-700
-              text-sm
-              font-medium
-              hover:bg-[#2f9bad]
-              hover:text-white
-              transition
-            "
-                      >
-                        ✓ {item}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-            {/* Activities */}
-
-            <h2 className="text-3xl font-bold text-gray-800 mt-12 mb-6">
-              Activities
-            </h2>
-
-            {activitiesData.map((section) => {
-              const selected = section.options.filter(
-                (item) => listing.activities?.[item],
-              );
-
-              if (selected.length === 0) return null;
-
-              return (
-                <div
-                  key={section.title}
-                  className="mb-8 bg-white border border-gray-100 rounded-2xl shadow-sm p-5"
-                >
-                  <h3 className="text-lg font-semibold text-[#2f9bad] mb-4 border-b pb-2">
-                    {section.title}
-                  </h3>
-
-                  <div className="flex flex-wrap gap-3">
-                    {selected.map((item) => (
-                      <span
-                        key={item}
-                        className="
-              px-4
-              py-2
-              rounded-full
-              bg-[#fff8eb]
-              border
-              border-[#fde7b0]
-              text-gray-700
-              text-sm
-              font-medium
-              hover:bg-amber-400
-              hover:text-white
-              transition
-            "
-                      >
-                        ✓ {item}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-
-            {/* Tabs */}
-            <div className="grid grid-cols-3 bg-[#2f2f2f] text-white ">
-              {["Availability", "Reviews", "Rates"].map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`py-4 font-semibold ${activeTab === tab ? "bg-[#3c8a8c]" : "hover:bg-[#444]"
-                    }`}
-                >
-                  {tab === "roomDetails" ? "Room Details" : tab}
-                </button>
-              ))}
-            </div>
-
-            {/* Tab Content */}
-            {/* Content */}
-            <div className="  p-8 bg-white min-h-[500px] overflow-x-auto">
-              <div className="mb-10 text-center">
-                <h2 className="text-5xl font-serif text-[#222] mb-3">
-                  Availability Calendar
+                  {listing.property?.title}
                 </h2>
 
-                <p className="text-gray-500 text-lg">
-                  View available, reserved and turnover dates.
-                </p>
-              </div>
-              {activeTab === "Availability" && (
-                <PropertyminiCalendar listingId={listing._id} />
-              )}
-              {activeTab === "Reviews" && (
-                <div>
-                  {/* HEADER */}
+                {/* PROPERTY INFO */}
 
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-1">
-                    <h2
-                      className="
-          text-3xl
-          md:text-3xl
-          font-serif
-          uppercase
-          tracking-wide
-          text-[#222]
-        "
-                    >
-                      Guest Reviews
-                    </h2>
-
-                    <button
-                      onClick={() => setOpenReview(true)}
-                      className="
-          bg-[#3c8a8c]
-          hover:bg-[#2f7274]
-          text-white
-          px-8
-          py-3
-          rounded-lg
-          font-semibold
-          transition
-          shadow-md
-        "
-                    >
-                      Write Review
-                    </button>
-                  </div>
-
-                  {/* REVIEWS */}
+                <div className=" flex flex-wrap gap-8 lg:gap-90 mb-10 ">
+                  {/* Sleeps */}
 
                   <div
-                    className="
-        max-h-[700px]
-        overflow-y-auto
-        pr-3
-        custom-scroll
-        space-y-10
-      "
+                    className="flex items-center gap-3   text-gray-600
+                text-base md:text-lg xl:text-xl leading-relaxed font-light"
                   >
-                    {reviews.length === 0 ? (
-                      <div className="text-center py-16">
-                        <h3 className="text-2xl font-semibold text-gray-700">
-                          No Reviews Yet
-                        </h3>
+                    <MdFamilyRestroom className="text-3xl text-gray-700 " />
 
-                        <p className="text-gray-500 mt-2">
-                          Be the first guest to share your experience.
-                        </p>
-                      </div>
-                    ) : (
-                      reviews.map((review) => (
-                        <div
-                          key={review._id}
-                          className="
-              border-b
-              border-gray-200
-              pb-10
-            "
-                        >
-                          {/* TOP */}
+                    <div className="flex gap-1 ">
+                      <p className=" text-md">
+                        {listing.property?.maxSleeps || 0}
+                      </p>
 
-                          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-3">
-                            <div>
-                              <p
-                                className="
-                    text-md
-                    font-semibold
-                    text-[#444]
-                  "
-                              >
-                                by {review.name}
-                                {review.stayDate && (
-                                  <>
-                                    {" "}
-                                    on{" "}
-                                    {new Date(
-                                      review.stayDate,
-                                    ).toLocaleDateString()}
-                                  </>
-                                )}
-                              </p>
-                            </div>
-
-                            {/* STARS */}
-
-                            <div className="flex text-yellow-400 text-3xl">
-                              {[1, 2, 3, 4, 5].map((star) => (
-                                <span key={star}>
-                                  {star <= review.rating ? "★" : "☆"}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-
-                          {/* TITLE */}
-
-                          {review.title && (
-                            <h3
-                              className="
-                  mt-1
-                  text-1xl
-                  md:text-1xl
-                  font-bold
-                  text-[#222]
-                "
-                            >
-                              {review.title}
-                            </h3>
-                          )}
-
-                          {/* MESSAGE */}
-
-                          <p
-                            className="
-                mt-1
-                text-lg
-                md:text-md
-                leading-8
-                text-gray-700
-              "
-                          >
-                            {review.message || review.comment}
-                          </p>
-                        </div>
-                      ))
-                    )}
-                  </div>
-
-                  {/* FOOTER BUTTONS */}
-
-                  <div className="mt-10 flex flex-wrap gap-4">
-                    {reviews.length >= 5 && (
-                      <button
-                        className="
-            border-2
-            border-[#3c8a8c]
-            text-[#3c8a8c]
-            hover:bg-[#3c8a8c]
-            hover:text-white
-            px-8
-            py-3
-            rounded-lg
-            font-semibold
-            transition
-          "
+                      <span
+                        className="text-gray-600 text-base md:text-lg xl:text-xl leading-relaxed
+                 font-light"
                       >
-                        More Reviews
-                      </button>
-                    )}
+                        Guests
+                      </span>
+                    </div>
                   </div>
 
-                  {openReview && (
-                    <ReviewModal
-                      listingId={listing._id}
-                      onClose={() => setOpenReview(false)}
-                    />
-                  )}
-                </div>
-              )}
-              {/* Room Details */}
-              {/* {activeTab === "roomDetails" && (
-                <div>
-                  <h3 className="text-2xl font-semibold mb-4">
-                    Room Details
-                  </h3>
+                  {/* Bedrooms */}
 
                   <div
-                    dangerouslySetInnerHTML={{
-                      __html: listing.description || "",
-                    }}
+                    className="flex items-center gap-3   text-gray-600
+            text-base
+            md:text-lg
+            xl:text-xl
+            leading-relaxed
+            font-light"
+                  >
+                    <MdOutlineDoorBack className="text-3xl text-gray-700" />
+
+                    <div className="flex gap-1 ">
+                      <p className=" text-md">
+                        {listing.property?.bedrooms || 0}
+                      </p>
+
+                      <span className="text-black text-md">Bedrooms</span>
+                    </div>
+                  </div>
+
+                  {/* Bathrooms */}
+
+                  <div
+                    className="flex items-center gap-3   text-gray-600
+            text-base
+            md:text-lg
+            xl:text-xl
+            leading-relaxed
+            font-light"
+                  >
+                    <LuBath className="text-3xl text-gray-700" />
+
+                    <div className="flex gap-1 ">
+                      <p className=" text-md">
+                        {listing.property?.bathrooms || 0}
+                      </p>
+
+                      <span className="text-black text-md">Bathrooms</span>
+                    </div>
+                  </div>
+
+                  {/* Category */}
+
+                  {/* <div className="flex items-center gap-3">
+                    <IoHome className="text-3xl text-gray-700" /> */}
+
+                  {/* <div  className="flex gap-1 ">
+                          <p className="font-light text-sm">
+                        {listing.property?.category || "Home"}
+                      </p>
+
+                      <span className="text-gray-500 text-sm">
+                        Property Type
+                      </span>
+                    </div> */}
+                  {/* </div> */}
+                </div>
+
+                {/* DESCRIPTION */}
+
+                <div
+                  className=" text-gray-600 text-base md:text-lg xl:text-xl leading-relaxed font-light prose
+    prose-lg max-w-none prose-headings:text-black prose-headings:font-bold prose-headings:mb-4 prose-p:text-gray-600
+    prose-p:leading-8 prose-p:mb-5 prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-black
+    prose-strong:font-semibold prose-ul:my-5 prose-ol:my-5 prose-li:text-gray-600 prose-li:marker:text-blue-600 prose-li:mb-2
+ prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:pl-4 prose-blockquote:text-gray-600 
+    prose-img:rounded-xl prose-img:shadow-lg leading-relaxed
+    
+  "
+                  style={{
+                    fontFamily: "Quicksand, sans-serif",
+                  }}
+                  dangerouslySetInnerHTML={{
+                    __html: listing.description || "",
+                  }}
+                />
+              </div>
+            </div>
+          </section>
+          <div
+            id="pictures"
+            className="
+    scroll-mt-[90px]
+    sm:scroll-mt-[100px]
+    lg:scroll-mt-[150px]
+
+    w-full
+    max-w-full
+    overflow-hidden
+  "
+          >
+            <GallerySection />
+          </div>
+
+          {/* AMENITIES */}
+          {/* =========================
+      AMENITIES
+========================= */}
+
+          <section
+            id="amenities"
+            className="
+    scroll-mt-[90px]
+    sm:scroll-mt-[100px]
+    lg:scroll-mt-[150px]
+
+    w-full
+    max-w-full
+    mt-16
+    overflow-hidden
+  "
+          >
+            <div className="max-w-7xl mx-auto">
+              <h2
+                className="
+        text-[30px] font-semibold text-center
+        uppercase leading-tight   mb-14 
+        tracking-[-0.035em]
+        text-[#171717]
+        drop-shadow-[2px_3px_1px_rgba(0,0,0,0.25)]
+        sm:text-4xl
+        lg:text-[48px]
+        xl:text-[40px]
+      "
+                style={{
+                  fontFamily: '"Oswald", sans-serif',
+                }}
+              >
+                Amenities
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-10">
+                {amenitiesData.map((section) => {
+                  const selected = section.options.filter(
+                    (item) => listing.amenities?.[item],
+                  );
+
+                  if (!selected.length) return null;
+
+                  return (
+                    <div key={section.title}>
+                      <h3
+                        className="
+                uppercase
+            tracking-[3px]
+            md:tracking-[4px]
+           text-black
+            text-xs
+            md:text-[16px]
+            mb-6
+                  "
+                        style={{
+                          fontFamily: "'Quicksand' , sans-serif",
+                        }}
+                      >
+                        {section.title}
+                      </h3>
+
+                      <p
+                        className="
+                text-gray-600
+            text-base
+            md:text-lg
+            xl:text-xl
+            leading-relaxed
+            font-light
+                  "
+                        style={{
+                          fontFamily: "Quicksand, sans-serif",
+                        }}
+                      >
+                        {selected.join(" , ")}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+          {/* Activities */}
+
+          {/* {activitiesData.map((section) => {
+            const selected = section.options.filter(
+              (item) => listing.activities?.[item],
+            );
+            if (selected.length === 0) return null;
+
+            return (
+              <div key={section.title} className="mb-6">
+                <h2 className="text-2xl font-semibold mt-8 mb-4">Activities</h2>
+                <h5 className="bg-[#2f9bad] text-white p-2 rounded-xl text-lg mb-2">
+                  {section.title}
+                </h5>
+
+                <ul className="grid grid-cols-2 md:grid-cols-3 gap-2 list-disc ml-6">
+                  {selected.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })} */}
+
+          {/* VIDEO */}
+
+          {/* PROPERTY VIDEO + LOCATION MAP */}
+          <div
+            className="
+    mx-auto mt-10 grid w-full max-w-7xl
+    grid-cols-1 gap-10 px-4
+    sm:px-6 lg:grid-cols-2 lg:gap-8 lg:px-8
+  "
+          >
+            {/* PROPERTY VIDEO */}
+            {listing.video?.youtube && (
+              <section
+                id="videos"
+                className="
+        min-w-0 w-full scroll-mt-[100px]
+        sm:scroll-mt-[120px]
+        lg:scroll-mt-[150px]
+      "
+              >
+                <h2
+                  className="
+          mb-6 text-center text-[30px]
+          font-semibold uppercase leading-tight
+          tracking-[-0.035em] text-[#171717]
+          drop-shadow-[2px_3px_1px_rgba(0,0,0,0.25)]
+          sm:text-4xl lg:text-[40px]
+        "
+                  style={{ fontFamily: '"Oswald", sans-serif' }}
+                >
+                  Property Video
+                </h2>
+
+                <div className="aspect-video w-full overflow-hidden rounded-xl border border-gray-200 shadow-md">
+                  <iframe
+                    src={getYoutubeEmbed(listing.video.youtube)}
+                    className="h-full w-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    loading="lazy"
+                    title="Property Video"
                   />
                 </div>
-              )} */}
+              </section>
+            )}
 
-              {activeTab === "Rates" && (
-                <div>
-                  {/* Header */}
-
-                  <div className="mb-8">
-                    <h2 className="text-4xl font-serif text-[#222]">
-                      Seasonal Rates
-                    </h2>
-
-                    <p className="text-gray-500 mt-2">
-                      View nightly rates and minimum stay requirements.
-                    </p>
-                  </div>
-
-                  {/* Desktop Table */}
-
-                  <div
-                    className="hidden lg:block  max-h-[500px] rounded-2xl border border-gray-200  overflow-y-auto
-    custom-scroll shadow-sm"
-                  >
-                    <table className="w-full">
-                      <thead>
-                        <tr className="bg-[#3c8a8c] text-white">
-                          <th className="p-4 text-center">Season</th>
-                          <th className="p-4 text-center">Period</th>
-                          <th className="p-4 text-center">Min Stay</th>
-                          <th className="p-4 text-center">Nightly Rate</th>
-                        </tr>
-                      </thead>
-
-                      <tbody className="text-center">
-                        {(listing.rates || []).map((rate, index) => (
-                          <tr
-                            key={index}
-                            className="
-    border-b
-    hover:bg-[#f7fbfb]
-    transition
-  "
-                          >
-                            <td className="p-4 font-semibold">{rate.season}</td>
-
-                            <td className="p-4 text-center whitespace-nowrap">
-                              {new Date(rate.from).toLocaleDateString("en-US", {
-                                month: "short",
-                                day: "numeric",
-                                year: "numeric",
-                              })}
-                              {" - "}
-                              {new Date(rate.to).toLocaleDateString("en-US", {
-                                month: "short",
-                                day: "numeric",
-                                year: "numeric",
-                              })}
-                            </td>
-
-                            <td className="p-4 text-center">
-                              {rate.minNights} Nights
-                            </td>
-
-                            <td className="p-4  font-bold text-[#3c8a8c]">
-                              ${Number(rate.nightly || 0).toLocaleString()}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  {/* Mobile Cards */}
-
-                  <div className="lg:hidden space-y-4">
-                    {(listing.rates || []).map((rate, index) => (
-                      <div
-                        key={index}
-                        className="
-            bg-white
-            border
-            rounded-2xl
-            p-5
-            shadow-sm
+            {/* PROPERTY LOCATION MAP */}
+            {listing?.location?.lat != null &&
+              listing?.location?.lng != null && (
+                <section
+                  id="location"
+                  className="
+          min-w-0 w-full scroll-mt-[100px]
+          sm:scroll-mt-[120px]
+          lg:scroll-mt-[150px]
+        "
+                >
+                  <h2
+                    className="
+            mb-6 text-center text-[30px]
+            font-semibold uppercase leading-tight
+            tracking-[-0.035em] text-[#171717]
+            drop-shadow-[2px_3px_1px_rgba(0,0,0,0.25)]
+            sm:text-4xl lg:text-[40px]
           "
-                      >
-                        <h3 className="text-xl font-bold text-[#3c8a8c]">
-                          {rate.season}
+                    style={{ fontFamily: '"Oswald", sans-serif' }}
+                  >
+                    Location
+                  </h2>
+
+                  <div className="aspect-video w-full overflow-hidden rounded-xl border border-gray-200 shadow-md">
+                    <iframe
+                      src={getMapEmbedUrl(
+                        listing.location.lat,
+                        listing.location.lng,
+                      )}
+                      className="h-full w-full"
+                      loading="lazy"
+                      allowFullScreen
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="Property Location"
+                    />
+                  </div>
+                </section>
+              )}
+          </div>
+
+          {/* Calendar  */}
+          <div
+            id="availability"
+            className="
+    scroll-mt-[90px]
+    sm:scroll-mt-[100px]
+    lg:scroll-mt-[150px]
+
+    w-full
+    max-w-full
+
+    mt-6
+
+    px-3
+    sm:px-6
+    md:px-10
+    lg:px-20
+  "
+          >
+            <PropertyminiCalendar listingId={listing._id} />
+          </div>
+          {/* ======================================================
+                    PREMIUM REVIEWS
+====================================================== */}
+
+          <section
+            id="reviews"
+            className="
+    mx-auto w-full max-w-7xl
+    scroll-mt-[100px]
+    px-4 py-12
+    sm:px-6 sm:py-16
+    lg:px-8 lg:py-20
+  "
+          >
+            {/* HEADER */}
+            <div
+              className="
+      mb-8 flex flex-col gap-6
+      sm:mb-10
+      lg:flex-row lg:items-center
+      lg:justify-between
+    "
+            >
+              <div className="min-w-0">
+                <h2
+                  className="
+          text-3xl   font-semibold uppercase
+          leading-tight tracking-[-0.025em]
+          text-[#171717]
+          drop-shadow-[2px_3px_1px_rgba(0,0,0,0.20)]
+          sm:text-4xl lg:text-[46px]
+        "
+                  style={{ fontFamily: '"Oswald", sans-serif' }}
+                >
+                  Guest Reviews
+                </h2>
+
+                {/* Average Rating */}
+                <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2">
+                  <span className="text-3xl font-semibold text-[#222]">
+                    {publishedReviews.length > 0
+                      ? (
+                        publishedReviews.reduce(
+                          (sum, item) => sum + Number(item.rating || 0),
+                          0,
+                        ) / publishedReviews.length
+                      ).toFixed(1)
+                      : "0.0"}
+                  </span>
+
+                  <span
+                    className="text-xl tracking-[2px] text-amber-500 sm:text-2xl"
+                    aria-label="5 star rating display"
+                  >
+                    ★★★★★
+                  </span>
+
+                  <span
+                    className="text-gray-600
+            text-base
+            md:text-lg
+            xl:text-xl
+            leading-relaxed
+            font-light"
+                  >
+                    ({publishedReviews.length}{" "}
+                    {publishedReviews.length === 1 ? "Review" : "Reviews"})
+                  </span>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setOpenReview(true)}
+                 className="
+        group relative mt-6
+        inline-flex min-h-[58px]
+        min-w-[185px] items-center
+        justify-center gap-3
+        bg-[#171717] px-7 py-4
+        text-[13px] font-semibold
+        tracking-[0.19em] text-white
+        shadow-[8px_8px_0px_#252525]
+        transition-all duration-300
+        hover:-translate-x-1 hover:-translate-y-1
+        hover:bg-[#315F60]
+        hover:shadow-[10px_10px_0px_#252525]
+        active:translate-x-1 active:translate-y-1
+        active:shadow-none
+        sm:min-w-[200px]
+      "
+      style={{
+        fontFamily: '"Montserrat", sans-serif',
+      }}
+    >
+                Write a Review
+                 <ArrowRight
+        size={16}
+        className="
+          transition-transform duration-300
+          group-hover:translate-x-1
+        "
+      />
+              </button>
+            </div>
+
+            {/* REVIEWS LIST */}
+            <div
+              className="
+      custom-scrollbar
+      max-h-[650px] space-y-5
+      overflow-y-auto overscroll-contain
+      pr-1 sm:pr-3
+    "
+            >
+              {publishedReviews.length === 0 ? (
+                <div
+                  className="
+          rounded-2xl border border-gray-200
+          bg-gray-50 px-5 py-12 text-center
+          sm:rounded-3xl sm:px-8 sm:py-16
+        "
+                >
+                  <h3
+                    className="text-2xl font-semibold text-gray-900 sm:text-3xl"
+                    style={{ fontFamily: '"Oswald", sans-serif' }}
+                  >
+                    No Reviews Yet
+                  </h3>
+
+                  <p className="mt-3 text-sm text-gray-500 sm:text-base">
+                    Be the first guest to share your experience.
+                  </p>
+
+                  <button
+                    type="button"
+                    onClick={() => setOpenReview(true)}
+                    className="
+            mt-6 rounded-lg bg-[#00989c]
+            px-6 py-3 font-semibold text-white
+            transition hover:bg-[#087b7e]
+          "
+                  >
+                    Write the First Review
+                  </button>
+                </div>
+              ) : (
+                publishedReviews.map((review) => (
+                  <article
+                    key={review._id}
+                    className="
+            rounded-2xl border border-gray-200
+            bg-white p-5 shadow-sm
+            transition-all duration-300
+            hover:border-gray-300 hover:shadow-lg
+            sm:rounded-3xl sm:p-7
+            lg:p-8
+          "
+                  >
+                    {/* Review Header */}
+                    <div
+                      className="
+              flex flex-col gap-4
+              sm:flex-row sm:items-start
+              sm:justify-between
+            "
+                    >
+                      <div className="min-w-0">
+                        <h3 className="uppercase break-words text-xl font-semibold text-[#222] sm:text-2xl">
+                          {review.title || "Guest Review"}
                         </h3>
 
-                        <div className="mt-4 space-y-3 text-gray-700">
-                          <div className="flex justify-between">
-                            <span>Period</span>
-
-                            <span className="font-medium">
-                              {rate.from} - {rate.to}
-                            </span>
-                          </div>
-
-                          <div className="flex justify-between">
-                            <span>Minimum Stay</span>
-
-                            <span className="font-medium">
-                              {rate.minNights} Nights
-                            </span>
-                          </div>
-
-                          <div className="flex justify-between">
-                            <span>Nightly Rate</span>
-
-                            <span className="font-bold text-[#3c8a8c]">
-                              ${Number(rate.nightly || 0).toLocaleString()}
-                            </span>
-                          </div>
-                        </div>
+                        <p
+                          className=" text-gray-600
+            text-base
+            md:text-lg
+            xl:text-xl
+            leading-relaxed
+            font-light"
+                        >
+                          By{" "}
+                          <span
+                            className=" text-gray-600
+            text-base
+            md:text-lg
+            xl:text-xl
+            leading-relaxed
+            font-light"
+                          >
+                            {review.name || "Guest"}
+                          </span>
+                        </p>
                       </div>
-                    ))}
-                  </div>
-                </div>
+
+                      <div className="shrink-0 sm:text-right">
+                        <div
+                          className="text-xl tracking-[2px] text-amber-500 sm:text-2xl"
+                          aria-label={`${review.rating} out of 5 stars`}
+                        >
+                          {"★".repeat(
+                            Math.max(
+                              0,
+                              Math.min(5, Number(review.rating) || 0),
+                            ),
+                          )}
+                          {"☆".repeat(
+                            5 -
+                            Math.max(
+                              0,
+                              Math.min(5, Number(review.rating) || 0),
+                            ),
+                          )}
+                        </div>
+
+                        {(review.stayDate || review.createdAt) && (
+                          <p
+                            className=" text-gray-600
+            text-base
+            md:text-lg
+            xl:text-xl
+            leading-relaxed
+            font-light"
+                          >
+                            Stayed{" "}
+                            {new Date(
+                              review.stayDate || review.createdAt,
+                            ).toLocaleDateString("en-US", {
+                              month: "long",
+                              year: "numeric",
+                            })}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Review Message */}
+                    <p
+                      className="
+              mt-5 whitespace-pre-line break-words
+              text-sm leading-7 text-gray-600  leading-relaxed
+            font-light
+              sm:mt-7 sm:text-base sm:leading-8
+            "
+                    >
+                      {review.message}
+                    </p>
+
+                    {/* Owner Reply */}
+                    {review.reply && (
+                      <div
+                        className="
+                mt-6 rounded-xl border-l-4
+                border-[#00989c] bg-[#f3fafa]
+                p-4 sm:mt-7 sm:rounded-2xl sm:p-6
+              "
+                      >
+                        <h4 className="mb-2 font-semibold text-[#087b7e]">
+                          Owner Response
+                        </h4>
+
+                        <p className="whitespace-pre-line break-words text-sm leading-7 text-gray-600 sm:text-base sm:leading-8">
+                          {review.reply}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Review Footer */}
+                    <div
+                      className="
+              mt-6 flex flex-wrap items-center
+              justify-between gap-3 border-t
+              border-gray-100 pt-4 sm:mt-7 sm:pt-5
+            "
+                    >
+                      <span className="text-xs text-gray-400 sm:text-sm">
+                        Guest Review
+                      </span>
+
+                      <span className="inline-flex items-center gap-2 text-xs font-semibold text-[#087b7e] sm:text-sm">
+                        <span className="h-2 w-2 rounded-full bg-[#00989c]" />
+                        Verified Stay
+                      </span>
+                    </div>
+                  </article>
+                ))
               )}
             </div>
-            {/* VIDEO */}
-            {listing.video?.youtube && (
-              <div className="mt-10">
-                <h2 className="text-2xl font-semibold mb-4">Property Video</h2>
-                <iframe
-                  src={getYoutubeEmbed(listing.video.youtube)}
-                  className="w-full h-80 rounded-xl border"
-                  allowFullScreen
-                  title="video"
-                />
-              </div>
-            )}
+          </section>
 
-            {/* MAP */}
-            {listing?.location?.lat && listing?.location?.lng && (
-              <div className="mt-10">
-                <h2 className="text-2xl font-semibold mb-4">Location</h2>
+          {/* Review Modal */}
 
-                <iframe
-                  src={getMapEmbedUrl(
-                    listing.location.lat,
-                    listing.location.lng,
-                  )}
-                  className="w-full h-96 rounded-xl border"
-                  loading="lazy"
-                  allowFullScreen
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Property Location"
-                />
-              </div>
-            )}
-          </div>
+          {openReview && (
+            <ReviewModal listingId={id} onClose={() => setOpenReview(false)} />
+          )}
+        </div>
+        <BookingBar
+          listing={listing}
+          arrival={arrival}
+          departure={departure}
+          setArrival={setArrival}
+          setDeparture={setDeparture}
+          guests={guests}
+          setGuests={setGuests}
+          setOpenBooking={setOpenBooking}
+          setOpenInquiry={setOpenInquiry}
+        />
+        {/* <OwnerRezWidget /> */}
 
-          {/* RIGHT */}
-          <div className="w-full lg:w-[480px] flex-shrink-0">
-            <div className="sticky top-28 ">
-              <BookingWidget listing={listing} />
-              
-            </div>
-          </div>
+        {/* RIGHT BOOKING */}
+        {/* CALENDAR */}
+
+        <div className="lg:col-span-1">
+          <div className="sticky top-[100px] bg-white rounded-3xl shadow-xl p-6 "></div>
         </div>
       </div>
 

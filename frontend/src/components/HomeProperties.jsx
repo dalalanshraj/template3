@@ -79,7 +79,7 @@ const HomeProperties = () => {
 
                     <Link
                         to="/properties"
-                        className="hidden sm:inline-flex items-center gap-2 text-[#4CAf50] font-semibold"
+                        className="hidden sm:inline-flex items-center gap-2 text-[#80a3a6] font-semibold"
                     >
                         View All <ArrowUpRight size={18} />
                     </Link>
@@ -139,7 +139,7 @@ const HomeProperties = () => {
                                             Starting From
                                         </p>
 
-                                        <p className="text-2xl font-bold text-[#4CAf50]">
+                                        <p className="text-2xl font-bold text-[#80a3a6]">
                                             {p.deal?.discountedRate != null
                                                 ? `$${p.deal.discountedRate}`
                                                 : p.rates?.[0]?.nightly != null
@@ -172,7 +172,7 @@ const HomeProperties = () => {
                 <div className="text-center mt-8 sm:hidden">
                     <Link
                         to="/properties"
-                        className="inline-flex items-center gap-2 text-[#4CAf50] font-semibold"
+                        className="inline-flex items-center gap-2 text-[#80a3a6] font-semibold"
                     >
                         View All Properties <ArrowUpRight size={18} />
                     </Link>

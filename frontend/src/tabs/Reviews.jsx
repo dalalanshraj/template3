@@ -176,8 +176,7 @@ export default function ReviewsTab({ listingId }) {
 
   const submitReview = async () => {
     if (
-      !reviewForm.firstName.trim() ||
-      !reviewForm.lastName.trim()
+      !reviewForm.firstName.trim()  
     ) {
       alert("Please enter first and last name");
       return;

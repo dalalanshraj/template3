@@ -29,6 +29,8 @@ const fallbackImages = [
   "https://anchorsaway30a.com/wp-content/uploads/2024/08/Gilbert_House38_websize.jpg",
   "https://anchorsaway30a.com/wp-content/uploads/2024/08/Gilbert_House56_websize.jpg",
   "https://anchorsaway30a.com/wp-content/uploads/2024/08/Gilbert_House24_websize.jpg",
+ 
+ 
 ];
 
 export default function GallerySection() {
@@ -126,18 +128,22 @@ export default function GallerySection() {
         <div className="text-center mb-14">
 
           <h2
-            className="text-4xl md:text-5xl lg:text-6xl text-[#6AA8E8]"
+            className="
+        text-[30px] font-semibold
+        uppercase leading-tight
+        tracking-[-0.035em]
+        text-[#171717]
+        drop-shadow-[2px_3px_1px_rgba(0,0,0,0.25)]
+        sm:text-4xl
+        lg:text-[48px]
+        xl:text-[40px]
+      "
             style={{
-              fontFamily: "'Great Vibes', cursive",
+              fontFamily: '"Oswald", sans-serif',
             }}
           >
             Photo Gallery
           </h2>
-
-          <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
-            Explore every corner of our beautiful vacation home.
-          </p>
-
         </div>
 
         {/* Gallery starts here... */}
@@ -297,34 +303,26 @@ export default function GallerySection() {
         }
       }}
       className="
-        inline-flex
-        items-center
-        justify-center
-        gap-2
-
-        px-8
-        py-3
-
-        rounded-full
-
-        border-2
-        border-[#2f9bad]
-
-        bg-white
-        text-[#2f9bad]
-
-        font-semibold
-        tracking-wide
-
-        transition-all
-        duration-300
-
-        hover:bg-[#2f9bad]
-        hover:text-white
-        hover:shadow-xl
-        hover:scale-105
+        group relative mt-6
+        inline-flex min-h-[58px]
+        min-w-[185px] items-center
+        justify-center gap-3
+        bg-[#171717] px-7 py-4
+        text-[13px] font-semibold
+        tracking-[0.19em] text-white
+        shadow-[8px_8px_0px_#252525]
+        transition-all duration-300
+        hover:-translate-x-1 hover:-translate-y-1
+        hover:bg-[#315F60]
+        hover:shadow-[10px_10px_0px_#252525]
+        active:translate-x-1 active:translate-y-1
+        active:shadow-none
+        sm:min-w-[200px]
       "
-    >
+      style={{
+        fontFamily: '"Montserrat", sans-serif',
+      }}
+     >
       {visibleCount >= images.length ? (
         <>
           ↑ See Less

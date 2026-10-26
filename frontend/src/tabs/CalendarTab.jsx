@@ -900,13 +900,13 @@ const saveBooking = async () => {
         <div className="flex flex-wrap justify-center gap-5 mt-8">
           {/* AVAILABLE */}
           <div className="flex items-center gap-2">
-            <span className="w-4 h-4 rounded bg-[#FFE7E7]"></span>
+            <span className="w-4 h-4 rounded bg-[#d1fae5]"></span>
             Available
           </div>
 
           {/* BOOKED */}
           <div className="flex items-center gap-2">
-            <span className="w-4 h-4 rounded bg-[#ADB8D6]"></span>
+            <span className="w-4 h-4 rounded bg-[#5C5CFF]"></span>
             Booked
           </div>
 
@@ -915,7 +915,7 @@ const saveBooking = async () => {
             <span
               className="w-4 h-4 rounded border"
               style={{
-                background: "linear-gradient(135deg, #ADB8D6 50%, #FFE7E7 50%)",
+                background: "linear-gradient(135deg, #5C5CFF 50%, #d1fae5 50%)",
               }}
             ></span>
             Check-Out
@@ -926,7 +926,7 @@ const saveBooking = async () => {
             <span
               className="w-4 h-4 rounded border"
               style={{
-                background: "linear-gradient(315deg, #ADB8D6 50%, #FFE7E7 50%)",
+                background: "linear-gradient(315deg, #5C5CFF 50%, #d1fae5 50%)",
               }}
             ></span>
             Check-In
@@ -934,7 +934,7 @@ const saveBooking = async () => {
 
           {/* TURNOVER */}
           <div className="flex items-center gap-2">
-            <span className="relative w-4 h-4 rounded bg-[#ADB8D6] overflow-hidden">
+            <span className="relative w-4 h-4 rounded bg-[#5C5CFF] overflow-hidden">
               <span className="absolute w-[140%] h-[2px] bg-black top-1/2 left-[-20%] rotate-135"></span>
             </span>
             Turnover
@@ -1594,18 +1594,18 @@ const saveBooking = async () => {
   } 
   /* AVAILABLE */ 
   .react-datepicker__day.available-day {
-   background: #FFE7E7 !important; 
+   background: #d1fae5 !important; 
    color: black !important; 
    } 
    /* AVAILABLE */
    .react-datepicker__day.available-day 
    { 
-   background: #FFE7E7 !important; 
+   background: #d1fae5 !important; 
    color: black !important; 
    } 
    /* BOOKED */ 
    .react-datepicker__day.blocked-day { 
-   background: #ADB8D6 !important; 
+   background: #5C5CFF !important; 
    color: white !important; 
    }
     /* HOLD */ 
@@ -1615,12 +1615,12 @@ const saveBooking = async () => {
     } 
     /* CHECK-IN */ 
     .react-datepicker__day.checkin-day { 
-    background: linear-gradient( 135deg, #FFE7E7 50%, #ADB8D6 50% ) !important; 
+    background: linear-gradient( 135deg, #d1fae5 50%, #5C5CFF 50% ) !important; 
     color: black !important; 
     } 
     /* CHECK-OUT */ 
     .react-datepicker__day.checkout-day { 
-    background: linear-gradient( 315deg, #FFE7E7 50%, #ADB8D6 50% ) !important; 
+    background: linear-gradient( 315deg, #d1fae5 50%, #5C5CFF 50% ) !important; 
     color: black !important; 
     } 
 
@@ -1629,12 +1629,12 @@ const saveBooking = async () => {
 .react-datepicker__day.turnover-day {
   background: linear-gradient(
     135deg,
-    #ADB8D6 0%,
-    #ADB8D6 48%,
+    #5C5CFF 0%,
+    #5C5CFF 48%,
     #000 48%,
     #000 52%,
-    #ADB8D6 52%,
-    #ADB8D6 100%
+    #5C5CFF 52%,
+    #5C5CFF 100%
   ) !important;
 
   color: white !important;
@@ -1650,7 +1650,7 @@ const saveBooking = async () => {
      pointer-events: none !important; 
      } 
    .react-datepicker__day.past-day {
-  background: #f1f1f1 !important;
+  background: #d1fae5 !important;
   color: #94a3b8 !important;
   opacity: 0.7 !important;
   cursor: not-allowed !important;
