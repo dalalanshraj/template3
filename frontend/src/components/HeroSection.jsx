@@ -105,7 +105,7 @@ export default function HeroSection() {
       >
         {/* Background video */}
         <img
-  src="/public/hero.png"
+  src="/hero.png"
   alt="Blue Mountain Beach beachfront vacation rentals"
   fetchPriority="high"
   className="
