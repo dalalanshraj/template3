@@ -242,7 +242,7 @@ export default function AboutSection() {
           {/* Left Image */}
           <div className="w-full shrink-0 md:w-[48%]">
             <img
-              src="https://img1.wsimg.com/isteam/ip/2e56267e-2454-402a-b8aa-7978b25f726c/Unit%20patio%20(1).png/:/cr=t:0%25,l:0%25,w:100%25,h:100%25/rs=w:1160,h:651"
+              src="https://a0.muscache.com/im/pictures/981e1c08-4da5-458c-9e04-b80885f7f904.jpg?im_w=2560"
               alt="property beachfront property"
               loading="lazy"
               className="
