@@ -105,7 +105,7 @@ export default function HeroSection() {
       >
         {/* Background video */}
         <img
-  src="https://img1.wsimg.com/isteam/ip/2e56267e-2454-402a-b8aa-7978b25f726c/unnamed%20(1).jpg/:/cr=t:21.8%25,l:0%25,w:100%25,h:56.39%25/rs=w:1200,h:902,cg:true"
+  src="/public/hero.png"
   alt="Blue Mountain Beach beachfront vacation rentals"
   fetchPriority="high"
   className="
@@ -162,11 +162,11 @@ export default function HeroSection() {
     textShadow: "2px 3px 1px rgba(239, 232, 232, 0.86)",
   }}
 >
-  Beachfront Condo on
+  New Millon Dollar  
   <br />
-  30A in Blue Mountain –
+Cabin on a Peaceful
   <br />
-  Beach Vacation Rentals
+ eaceful, Secluded
 </h1>
     <button
       type="button"
